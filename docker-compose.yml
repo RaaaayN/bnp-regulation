@@ -1,0 +1,71 @@
+name: regulatory-intelligence
+
+services:
+  api:
+    build:
+      context: .
+      target: runtime
+    environment:
+      RIA_APP_NAME: ${RIA_APP_NAME:-Regulatory Intelligence Assistant}
+      RIA_ENVIRONMENT: ${RIA_ENVIRONMENT:-development}
+      RIA_LOG_LEVEL: ${RIA_LOG_LEVEL:-INFO}
+      RIA_DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-regulatory}:${POSTGRES_PASSWORD:-regulatory}@postgres:5432/${POSTGRES_DB:-regulatory}
+      RIA_EVIDENCE_THRESHOLD: ${RIA_EVIDENCE_THRESHOLD:-0.15}
+      RIA_MAX_RESULTS: ${RIA_MAX_RESULTS:-5}
+      FALKORDB_URL: redis://falkordb:6379/0
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      falkordb:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-regulatory}
+      POSTGRES_USER: ${POSTGRES_USER:-regulatory}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-regulatory}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  falkordb:
+    image: falkordb/falkordb:latest
+    ports:
+      - "${FALKORDB_PORT:-6379}:6379"
+    volumes:
+      - falkordb_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  falkordb_data:
