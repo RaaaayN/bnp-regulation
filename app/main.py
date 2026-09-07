@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from app.api.health import router as health_router
 from app.api.routes import router as api_router
 from app.config import get_settings
+from app.persistence.database import create_schema, dispose_engine
 from app.retrieval import HybridRetriever, InMemoryIndex
 
 
@@ -15,7 +16,12 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     application.state.retriever = HybridRetriever(
         InMemoryIndex(), evidence_threshold=settings.evidence_threshold
     )
-    yield
+    if settings.auto_create_schema:
+        await create_schema()
+    try:
+        yield
+    finally:
+        await dispose_engine()
 
 
 def create_app() -> FastAPI:

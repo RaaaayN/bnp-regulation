@@ -12,6 +12,7 @@ services:
       RIA_DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-regulatory}:${POSTGRES_PASSWORD:-regulatory}@postgres:5432/${POSTGRES_DB:-regulatory}
       RIA_EVIDENCE_THRESHOLD: ${RIA_EVIDENCE_THRESHOLD:-0.15}
       RIA_MAX_RESULTS: ${RIA_MAX_RESULTS:-5}
+      RIA_AUTO_CREATE_SCHEMA: "true"
       FALKORDB_URL: redis://falkordb:6379/0
     ports:
       - "${API_PORT:-8000}:8000"

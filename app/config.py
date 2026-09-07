@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     )
     evidence_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
     max_results: int = Field(default=5, ge=1, le=50)
-    auto_create_schema: bool = True
+    auto_create_schema: bool = False
 
 
 @lru_cache
