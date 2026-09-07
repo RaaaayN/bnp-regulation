@@ -39,6 +39,7 @@ utiles sont documentés dans `.env.example`.
 | `RIA_LOG_LEVEL` | `INFO` | Niveau de journalisation |
 | `RIA_EVIDENCE_THRESHOLD` | `0.15` | Seuil minimal de preuve |
 | `RIA_MAX_RESULTS` | `5` | Nombre maximal de résultats |
+| `RIA_AUTO_CREATE_SCHEMA` | activé par Compose | Création du schéma au démarrage |
 | `POSTGRES_*` | voir exemple | Base, utilisateur, mot de passe et port PostgreSQL |
 | `FALKORDB_PORT` | `6379` | Port FalkorDB publié localement |
 

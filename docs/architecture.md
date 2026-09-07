@@ -54,13 +54,13 @@ flowchart TB
 
 | Composant | Responsabilité | État |
 |---|---|---|
-| API | Contrat HTTP, validation, cycle de vie | Socle implémenté |
-| Ingestion | Parsing, structure, métadonnées, chunking sémantique | Cible MVP |
-| Retrieval | Recherche hybride, reranking, seuil de preuve | Cible MVP |
-| Change analysis | Alignement de sections et classification sémantique | Cible MVP |
-| Impact analysis | Parcours exigences → politiques → contrôles → processus | Cible MVP |
-| Reviewer | Vérification claim → source et suppression des claims non supportés | Cible MVP |
-| PostgreSQL/pgvector | Documents, passages, embeddings, métadonnées, audit | Infrastructure prête |
+| API | Contrats HTTP versionnés, validation, cycle de vie | Implémenté |
+| Ingestion | Parsing texte/HTML, métadonnées, chunking structurel | Implémenté |
+| Retrieval | BM25, similarité de tokens, seuil de preuve | Implémenté en mémoire |
+| Change analysis | Alignement, classification, matérialité déterministe | Implémenté |
+| Impact analysis | Rapprochement prudent par concepts configurés | Implémenté |
+| Reviewer | Vérification exacte claim → source, politique fail-closed | Implémenté |
+| PostgreSQL/pgvector | Documents, sections, métadonnées, audit | Schéma et adaptateur prêts |
 | FalkorDB | Relations réglementaires et internes | Infrastructure prête |
 
 ## Flux principal
@@ -136,13 +136,16 @@ données dans des volumes nommés.
 
 ## Limites actuelles
 
-- Le socle actuel expose une vivacité, sans readiness applicative des bases.
+- Le socle expose une vivacité, sans readiness applicative des bases.
 - FalkorDB est démarré mais son client n'est pas encore intégré à l'API.
 - L'image FalkorDB utilise le tag `latest` pour le MVP local ; un digest immuable
   doit être fixé avant une mise en production.
 - Compose fournit un environnement mono-hôte sans TLS, haute disponibilité,
   sauvegarde automatisée ni rotation de secrets.
-- L'ingestion, le retrieval, le graphe métier, les agents, l'évaluation et
-  l'interface utilisateur restent des composants cibles.
+- L'index HTTP est en mémoire et doit être branché à PostgreSQL/pgvector pour
+  survivre aux redémarrages et permettre plusieurs réplicas.
+- L'analyse actuelle est déterministe et explicable ; l'intégration d'embeddings,
+  d'un reranker et d'un LLM reste à mesurer avant activation.
+- Il n'existe pas encore d'interface utilisateur dédiée.
 - Aucune métrique de qualité ne doit être revendiquée avant évaluation sur un jeu
   de référence versionné.
