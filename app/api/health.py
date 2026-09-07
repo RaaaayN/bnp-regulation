@@ -14,4 +14,3 @@ async def health() -> dict[str, str]:
         "version": __version__,
         "timestamp": datetime.now(UTC).isoformat(),
     }
-

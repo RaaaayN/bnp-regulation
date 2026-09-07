@@ -6,9 +6,9 @@ import math
 import re
 import unicodedata
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
 from threading import RLock
-from typing import Iterable
 
 from app.ingestion import IngestedDocument, TextChunk
 
@@ -78,9 +78,7 @@ class InMemoryIndex:
         """Return a stable snapshot in insertion-independent order."""
 
         with self._lock:
-            return tuple(
-                (self._chunks[key], self._tokens[key]) for key in sorted(self._chunks)
-            )
+            return tuple((self._chunks[key], self._tokens[key]) for key in sorted(self._chunks))
 
     def __len__(self) -> int:
         with self._lock:
@@ -129,7 +127,15 @@ class HybridRetriever:
         average_length = sum(len(tokens) for _, tokens in snapshot) / len(snapshot)
         query_counts = Counter(query_tokens)
         raw_lexical = [
-            _bm25(tokens, query_counts, document_frequency, len(snapshot), average_length, self.k1, self.b)
+            _bm25(
+                tokens,
+                query_counts,
+                document_frequency,
+                len(snapshot),
+                average_length,
+                self.k1,
+                self.b,
+            )
             for _, tokens in snapshot
         ]
         max_lexical = max(raw_lexical, default=0.0)
@@ -139,7 +145,9 @@ class HybridRetriever:
         for (chunk, tokens), raw_score in zip(snapshot, raw_lexical, strict=True):
             lexical = raw_score / max_lexical if max_lexical else 0.0
             token_set = set(tokens)
-            similarity = len(query_set & token_set) / len(query_set | token_set) if token_set else 0.0
+            similarity = (
+                len(query_set & token_set) / len(query_set | token_set) if token_set else 0.0
+            )
             score = self.lexical_weight * lexical + (1 - self.lexical_weight) * similarity
             if score >= self.evidence_threshold:
                 results.append(SearchResult(chunk, score, lexical, similarity))

@@ -8,4 +8,3 @@ from app.main import create_app
 def client() -> TestClient:
     with TestClient(create_app()) as test_client:
         yield test_client
-

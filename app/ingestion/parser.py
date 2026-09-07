@@ -106,7 +106,13 @@ def parse_text(content: str, metadata: DocumentMetadata) -> IngestedDocument:
         heading = _MARKDOWN_HEADING_RE.match(first)
         article = _ARTICLE_RE.match(first)
         if heading:
-            blocks.append(_Block("heading", _normalize_inline(heading.group("title")), len(heading.group("marks"))))
+            blocks.append(
+                _Block(
+                    "heading",
+                    _normalize_inline(heading.group("title")),
+                    len(heading.group("marks")),
+                )
+            )
             if rest:
                 blocks.append(_Block("paragraph", _normalize_inline(" ".join(rest))))
         elif article:

@@ -44,6 +44,7 @@ def sanitize_untrusted_content(text: str) -> SanitizationResult:
     return SanitizationResult(
         text=sanitized,
         detected_categories=tuple(categories),
-        injection_suspected=any(pattern.search(text) is not None for pattern in _INJECTION_PATTERNS),
+        injection_suspected=any(
+            pattern.search(text) is not None for pattern in _INJECTION_PATTERNS
+        ),
     )
-

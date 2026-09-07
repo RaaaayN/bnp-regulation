@@ -1,6 +1,11 @@
 from collections.abc import AsyncIterator
 
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from app.config import get_settings
 from app.persistence.models import Base
@@ -22,4 +27,3 @@ async def create_schema() -> None:
 
 async def dispose_engine() -> None:
     await engine.dispose()
-

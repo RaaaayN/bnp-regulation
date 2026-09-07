@@ -14,7 +14,9 @@ class Base(DeclarativeBase):
 class RegulatoryDocument(Base):
     __tablename__ = "regulatory_documents"
     __table_args__ = (
-        Index("ix_regulatory_document_identity", "regulator", "external_id", "version", unique=True),
+        Index(
+            "ix_regulatory_document_identity", "regulator", "external_id", "version", unique=True
+        ),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -25,7 +27,9 @@ class RegulatoryDocument(Base):
     version: Mapped[str] = mapped_column(String(100))
     publication_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     source_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC)
+    )
     sections: Mapped[list["DocumentSection"]] = relationship(
         back_populates="document", cascade="all, delete-orphan"
     )
@@ -33,7 +37,9 @@ class RegulatoryDocument(Base):
 
 class DocumentSection(Base):
     __tablename__ = "document_sections"
-    __table_args__ = (Index("ix_document_section_reference", "document_id", "reference", unique=True),)
+    __table_args__ = (
+        Index("ix_document_section_reference", "document_id", "reference", unique=True),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     document_id: Mapped[uuid.UUID] = mapped_column(
@@ -59,4 +65,3 @@ class AuditEvent(Base):
     action: Mapped[str] = mapped_column(String(100), index=True)
     request_id: Mapped[str] = mapped_column(String(100), index=True)
     payload: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
-

@@ -7,11 +7,13 @@ def _retriever(*, threshold: float = 0.12) -> HybridRetriever:
     index.add_many(
         [
             ingest(
-                "# Fonds propres\n\nArticle 3 - Le ratio de fonds propres minimal est de huit pour cent.",
+                "# Fonds propres\n\n"
+                "Article 3 - Le ratio de fonds propres minimal est de huit pour cent.",
                 source="CRR",
             ),
             ingest(
-                "# Liquidité\n\nArticle 9 - Les banques maintiennent un coussin de liquidité quotidien.",
+                "# Liquidité\n\n"
+                "Article 9 - Les banques maintiennent un coussin de liquidité quotidien.",
                 source="LCR",
             ),
         ]

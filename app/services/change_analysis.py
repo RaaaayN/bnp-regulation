@@ -219,24 +219,16 @@ class ChangeAnalysisService:
         old_modals = Counter(word for word in old_words if word in _MODAL_STRENGTH)
         new_modals = Counter(word for word in new_words if word in _MODAL_STRENGTH)
         removed_strengths = [
-            _MODAL_STRENGTH[word]
-            for word, count in old_modals.items()
-            if count > new_modals[word]
+            _MODAL_STRENGTH[word] for word, count in old_modals.items() if count > new_modals[word]
         ]
         added_strengths = [
-            _MODAL_STRENGTH[word]
-            for word, count in new_modals.items()
-            if count > old_modals[word]
+            _MODAL_STRENGTH[word] for word, count in new_modals.items() if count > old_modals[word]
         ]
         strengthened = bool(
-            removed_strengths
-            and added_strengths
-            and max(added_strengths) > min(removed_strengths)
+            removed_strengths and added_strengths and max(added_strengths) > min(removed_strengths)
         )
         weakened = bool(
-            removed_strengths
-            and added_strengths
-            and min(added_strengths) < max(removed_strengths)
+            removed_strengths and added_strengths and min(added_strengths) < max(removed_strengths)
         )
         signals: list[str] = []
         if strengthened:
