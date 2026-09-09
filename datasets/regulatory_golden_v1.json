@@ -1,0 +1,146 @@
+{
+  "dataset": "EU banking regulatory intelligence golden set",
+  "version": "1.0.0",
+  "retrieval": {
+    "k": 5,
+    "documents": [
+      {
+        "source": "EBA-ICT-2026",
+        "title": "ICT and security risk management",
+        "jurisdiction": "EU",
+        "published_at": "2026-01-15",
+        "content": "# ICT risk management\n\nArticle 8 - Governance\n\nInstitutions must review and approve their ICT risk management framework at least annually.\n\nArticle 11 - Incident reporting\n\nMajor ICT-related incidents must be reported to the competent authority without undue delay."
+      },
+      {
+        "source": "AMLD6-2025",
+        "title": "Anti-money laundering controls",
+        "jurisdiction": "EU",
+        "published_at": "2025-07-01",
+        "content": "# Customer due diligence\n\nArticle 22 - Beneficial ownership\n\nCredit institutions must identify and verify the beneficial owner before establishing a business relationship.\n\nArticle 31 - Record retention\n\nCustomer due diligence records must be retained for five years after the relationship ends."
+      },
+      {
+        "source": "DORA-2025",
+        "title": "Digital operational resilience",
+        "jurisdiction": "EU",
+        "published_at": "2025-01-17",
+        "content": "# Third-party risk\n\nArticle 28 - Register of information\n\nFinancial entities must maintain and update a register of all contractual arrangements with ICT third-party service providers.\n\nArticle 30 - Contractual provisions\n\nContracts must specify service level descriptions, data locations and termination rights."
+      },
+      {
+        "source": "CRR3-2025",
+        "title": "Capital requirements",
+        "jurisdiction": "EU",
+        "published_at": "2025-01-01",
+        "content": "# Prudential reporting\n\nArticle 430 - Reporting obligations\n\nInstitutions shall report own funds requirements and financial information to competent authorities.\n\nArticle 92 - Own funds requirements\n\nThe total capital ratio must be at least eight percent of the total risk exposure amount."
+      },
+      {
+        "source": "GDPR-2018",
+        "title": "General Data Protection Regulation",
+        "jurisdiction": "EU",
+        "published_at": "2018-05-25",
+        "content": "# Security and notification\n\nArticle 32 - Security of processing\n\nControllers must implement technical and organisational measures appropriate to the risk.\n\nArticle 33 - Breach notification\n\nA personal data breach must be notified to the supervisory authority within 72 hours where feasible."
+      }
+    ],
+    "queries": [
+      {
+        "id": "ret-001",
+        "question": "How often must an institution approve its ICT risk management framework?",
+        "relevant_citations": ["EBA-ICT-2026 > ICT risk management > Article 8"]
+      },
+      {
+        "id": "ret-002",
+        "question": "What must be done with customer due diligence records after a relationship ends?",
+        "relevant_citations": ["AMLD6-2025 > Customer due diligence > Article 31"]
+      },
+      {
+        "id": "ret-003",
+        "question": "Which ICT supplier arrangements belong in the register of information?",
+        "relevant_citations": ["DORA-2025 > Third-party risk > Article 28"]
+      },
+      {
+        "id": "ret-004",
+        "question": "What minimum total capital ratio applies to risk exposure?",
+        "relevant_citations": ["CRR3-2025 > Prudential reporting > Article 92"]
+      },
+      {
+        "id": "ret-005",
+        "question": "Within how many hours should a personal data breach be notified?",
+        "relevant_citations": ["GDPR-2018 > Security and notification > Article 33"]
+      },
+      {
+        "id": "ret-006",
+        "question": "Which details and termination rights must ICT contracts specify?",
+        "relevant_citations": ["DORA-2025 > Third-party risk > Article 30"]
+      }
+    ]
+  },
+  "changes": {
+    "materiality_threshold": 0.35,
+    "cases": [
+      {
+        "id": "chg-001",
+        "expected_material": true,
+        "previous": {"document_id": "eba-ict", "section_id": "8", "title": "Governance", "text": "Institutions should review the ICT risk framework annually.", "page": 12, "version": "2025"},
+        "current": {"document_id": "eba-ict", "section_id": "8", "title": "Governance", "text": "Institutions must review the ICT risk framework annually.", "page": 12, "version": "2026"}
+      },
+      {
+        "id": "chg-002",
+        "expected_material": true,
+        "previous": {"document_id": "gdpr-rts", "section_id": "4", "title": "Notification", "text": "The institution must notify the authority within 72 hours.", "page": 7, "version": "2025"},
+        "current": {"document_id": "gdpr-rts", "section_id": "4", "title": "Notification", "text": "The institution must notify the authority within 24 hours.", "page": 7, "version": "2026"}
+      },
+      {
+        "id": "chg-003",
+        "expected_material": false,
+        "previous": {"document_id": "crr", "section_id": "92", "title": "Capital", "text": "Institutions must maintain adequate own funds.", "page": 41, "version": "2025"},
+        "current": {"document_id": "crr", "section_id": "92", "title": "Capital", "text": "  Institutions must maintain adequate own funds. ", "page": 41, "version": "2026"}
+      },
+      {
+        "id": "chg-004",
+        "expected_material": false,
+        "previous": {"document_id": "aml", "section_id": "19", "title": "Training", "text": "Staff training should cover financial crime risks.", "page": 23, "version": "2025"},
+        "current": {"document_id": "aml", "section_id": "19", "title": "Training", "text": "Staff training should cover relevant financial crime risks.", "page": 23, "version": "2026"}
+      },
+      {
+        "id": "chg-005",
+        "expected_material": true,
+        "previous": null,
+        "current": {"document_id": "dora", "section_id": "30a", "title": "Exit plans", "text": "Financial entities must maintain documented exit plans for critical ICT providers.", "page": 55, "version": "2026"}
+      },
+      {
+        "id": "chg-006",
+        "expected_material": true,
+        "previous": {"document_id": "aml", "section_id": "44", "title": "Legacy exemption", "text": "Institutions may omit verification for qualifying legacy accounts.", "page": 61, "version": "2025"},
+        "current": null
+      }
+    ]
+  },
+  "grounding": {
+    "sources": [
+      {"document_id": "dora", "section_id": "28", "title": "Register", "text": "Financial entities must maintain a register of ICT third-party arrangements.", "page": 49, "version": "2026"},
+      {"document_id": "aml", "section_id": "31", "title": "Retention", "text": "Due diligence records must be retained for five years.", "page": 35, "version": "2026"}
+    ],
+    "claims": [
+      {
+        "claim_id": "evidence-001",
+        "text": "A register of ICT third-party arrangements is mandatory.",
+        "expected_status": "supported",
+        "citations": [{"document_id": "dora", "section_id": "28", "quote": "must maintain a register of ICT third-party arrangements", "page": 49, "version": "2026"}]
+      },
+      {
+        "claim_id": "evidence-002",
+        "text": "Due diligence records are retained for five years, not ten.",
+        "expected_status": "partially_supported",
+        "citations": [
+          {"document_id": "aml", "section_id": "31", "quote": "Due diligence records must be retained for five years.", "page": 35, "version": "2026"},
+          {"document_id": "aml", "section_id": "31", "quote": "Records must be retained for ten years.", "page": 35, "version": "2026"}
+        ]
+      },
+      {
+        "claim_id": "evidence-003",
+        "text": "The register is optional.",
+        "expected_status": "unsupported",
+        "citations": [{"document_id": "dora", "section_id": "28", "quote": "Entities may optionally maintain a register.", "page": 49, "version": "2026"}]
+      }
+    ]
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "benchmark": {
+    "dataset": "EU banking regulatory intelligence golden set",
+    "deterministic": true,
+    "sha256": "df6ff5f5a3202e07501f0cdec0126cdd68d71f5b91a064a1acf4945aa00e9924",
+    "version": "1.0.0"
+  },
+  "details": {
+    "changes": [
+      {
+        "change_type": "modified",
+        "expected_material": true,
+        "id": "chg-001",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ]
+      },
+      {
+        "change_type": "modified",
+        "expected_material": true,
+        "id": "chg-002",
+        "materiality": "medium",
+        "materiality_score": 0.3903,
+        "predicted_material": true,
+        "signals": [
+          "numeric_threshold_changed"
+        ]
+      },
+      {
+        "change_type": "unchanged",
+        "expected_material": false,
+        "id": "chg-003",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": []
+      },
+      {
+        "change_type": "modified",
+        "expected_material": false,
+        "id": "chg-004",
+        "materiality": "low",
+        "materiality_score": 0.2496,
+        "predicted_material": false,
+        "signals": []
+      },
+      {
+        "change_type": "added",
+        "expected_material": true,
+        "id": "chg-005",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "new_section"
+        ]
+      },
+      {
+        "change_type": "removed",
+        "expected_material": true,
+        "id": "chg-006",
+        "materiality": "medium",
+        "materiality_score": 0.5,
+        "predicted_material": true,
+        "signals": [
+          "removed_section"
+        ]
+      }
+    ],
+    "evidence_reviews": [
+      {
+        "claim_id": "claim-7f8aaefe3692",
+        "expected_status": null,
+        "status": "supported",
+        "supported_citations": 2,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "claim-6df436fc327b",
+        "expected_status": null,
+        "status": "supported",
+        "supported_citations": 2,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "claim-97f94c74d0fe",
+        "expected_status": null,
+        "status": "supported",
+        "supported_citations": 2,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "claim-f81b1f35bef3",
+        "expected_status": null,
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "claim-97f276a83cd8",
+        "expected_status": null,
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "evidence-001",
+        "expected_status": "supported",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "evidence-002",
+        "expected_status": "partially_supported",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "evidence-003",
+        "expected_status": "unsupported",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      }
+    ],
+    "retrieval": [
+      {
+        "expected": [
+          "EBA-ICT-2026 > ICT risk management > Article 8"
+        ],
+        "hit_at_k": true,
+        "id": "ret-001",
+        "question": "How often must an institution approve its ICT risk management framework?",
+        "retrieved": [
+          "EBA-ICT-2026 > ICT risk management > Article 8",
+          "GDPR-2018 > Security and notification > Article 32",
+          "EBA-ICT-2026 > ICT risk management > Article 11",
+          "CRR3-2025 > Prudential reporting > Article 92",
+          "DORA-2025 > Third-party risk > Article 28"
+        ]
+      },
+      {
+        "expected": [
+          "AMLD6-2025 > Customer due diligence > Article 31"
+        ],
+        "hit_at_k": true,
+        "id": "ret-002",
+        "question": "What must be done with customer due diligence records after a relationship ends?",
+        "retrieved": [
+          "AMLD6-2025 > Customer due diligence > Article 31",
+          "AMLD6-2025 > Customer due diligence > Article 22",
+          "DORA-2025 > Third-party risk > Article 28",
+          "GDPR-2018 > Security and notification > Article 33",
+          "EBA-ICT-2026 > ICT risk management > Article 11"
+        ]
+      },
+      {
+        "expected": [
+          "DORA-2025 > Third-party risk > Article 28"
+        ],
+        "hit_at_k": true,
+        "id": "ret-003",
+        "question": "Which ICT supplier arrangements belong in the register of information?",
+        "retrieved": [
+          "DORA-2025 > Third-party risk > Article 28",
+          "DORA-2025 > Third-party risk > Article 28",
+          "CRR3-2025 > Prudential reporting > Article 92",
+          "EBA-ICT-2026 > ICT risk management > Article 11",
+          "GDPR-2018 > Security and notification > Article 32"
+        ]
+      },
+      {
+        "expected": [
+          "CRR3-2025 > Prudential reporting > Article 92"
+        ],
+        "hit_at_k": true,
+        "id": "ret-004",
+        "question": "What minimum total capital ratio applies to risk exposure?",
+        "retrieved": [
+          "CRR3-2025 > Prudential reporting > Article 92",
+          "GDPR-2018 > Security and notification > Article 32",
+          "EBA-ICT-2026 > ICT risk management > Article 8",
+          "CRR3-2025 > Prudential reporting > Article 430",
+          "EBA-ICT-2026 > ICT risk management > Article 11"
+        ]
+      },
+      {
+        "expected": [
+          "GDPR-2018 > Security and notification > Article 33"
+        ],
+        "hit_at_k": true,
+        "id": "ret-005",
+        "question": "Within how many hours should a personal data breach be notified?",
+        "retrieved": [
+          "GDPR-2018 > Security and notification > Article 33",
+          "GDPR-2018 > Security and notification > Article 33",
+          "DORA-2025 > Third-party risk > Article 30",
+          "AMLD6-2025 > Customer due diligence > Article 22",
+          "AMLD6-2025 > Customer due diligence > Article 31"
+        ]
+      },
+      {
+        "expected": [
+          "DORA-2025 > Third-party risk > Article 30"
+        ],
+        "hit_at_k": true,
+        "id": "ret-006",
+        "question": "Which details and termination rights must ICT contracts specify?",
+        "retrieved": [
+          "DORA-2025 > Third-party risk > Article 30",
+          "EBA-ICT-2026 > ICT risk management > Article 8",
+          "DORA-2025 > Third-party risk > Article 28",
+          "EBA-ICT-2026 > ICT risk management > Article 11",
+          "GDPR-2018 > Security and notification > Article 32"
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "change_detection": {
+      "f1": 1.0,
+      "false_negatives": 0,
+      "false_positives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "true_positives": 4
+    },
+    "evidence": {
+      "claim_set_composition": {
+        "citation_accuracy": 0.8333,
+        "evaluated_citations": 12,
+        "evaluated_claims": 8,
+        "grounded_claims": 7,
+        "groundedness": 0.875,
+        "supported_citations": 10
+      },
+      "reviewer_classification": {
+        "accuracy": 1.0,
+        "correct": 3,
+        "evaluated_cases": 3
+      }
+    },
+    "retrieval": {
+      "evaluated_cases": 6,
+      "mean_reciprocal_rank": 1.0,
+      "recall_at_k": 1.0
+    }
+  }
+}
