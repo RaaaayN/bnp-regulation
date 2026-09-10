@@ -4,28 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Evidence-grounded regulatory intelligence demonstration">
-  <title>RegLens — Regulatory Intelligence</title>
+  <title>Regulatory Intelligence Assistant</title>
   <link rel="stylesheet" href="/static/demo.css">
   <script src="/static/demo.js" defer></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="RegLens home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>RegLens</span></a>
+    <a class="brand" href="#top" aria-label="Regulatory Intelligence Assistant home"><span>Regulatory Intelligence Assistant</span></a>
     <nav aria-label="Main navigation"><a href="#analysis">Analysis</a><a href="#architecture">Architecture</a><a href="#metrics">Evaluation</a></nav>
-    <div class="system-status"><span class="status-dot"></span><span>Systems operational</span></div>
+    <div class="system-status"><span class="status-dot"></span><span>Operational</span></div>
   </header>
 
   <main id="top">
     <section class="hero">
-      <div class="eyebrow"><span>REGULATORY INTELLIGENCE</span><span class="eyebrow-line"></span> EVIDENCE FIRST</div>
-      <h1>Turn regulatory change<br>into <em>auditable action.</em></h1>
-      <p class="hero-copy">A production-minded pipeline that detects material changes, grounds every claim in source evidence, and maps obligations to internal controls.</p>
-      <div class="hero-actions"><a class="button primary" href="#analysis">Run live analysis <span>→</span></a><a class="button ghost" href="/docs">Explore API</a></div>
+      <div class="eyebrow"><span>INTERNAL ANALYSIS WORKBENCH</span></div>
+      <h1>Regulatory change analysis</h1>
+      <p class="hero-copy">Compare regulatory versions, verify supporting evidence and identify potentially affected internal controls.</p>
+      <div class="hero-actions"><a class="button primary" href="#analysis">Open analysis</a><a class="button ghost" href="/docs">API documentation</a></div>
       <div class="hero-proof"><div><strong>5-stage</strong><span>auditable pipeline</span></div><div><strong>Fail closed</strong><span>without evidence</span></div><div><strong>Deterministic</strong><span>change detection</span></div></div>
     </section>
 
     <section id="analysis" class="workspace section-wrap">
-      <div class="section-heading"><div><span class="kicker">LIVE WORKBENCH</span><h2>Regulatory change analysis</h2></div><div class="live-badge"><span></span> Connected to FastAPI</div></div>
+      <div class="section-heading"><div><span class="kicker">ANALYSIS / EBA / 12.3</span><h2>Version comparison</h2></div><div class="live-badge"><span></span> API connected</div></div>
       <div class="workbench">
         <aside class="pipeline-card">
           <p class="card-label">ANALYSIS PIPELINE</p>
@@ -47,7 +47,7 @@
           </div>
           <div class="signal-row">
             <div class="score-ring"><span id="materiality-score">—</span><small>MATERIALITY</small></div>
-            <div class="signal-copy"><span class="card-label">DETECTED SIGNAL</span><strong id="signal-label">Ready to analyse</strong><small>Modal verb transition · recommendation → binding obligation</small></div>
+            <div class="signal-copy"><span class="card-label">DETECTED SIGNAL</span><strong id="signal-label">Ready for analysis</strong><small>Modal verb transition · recommendation → binding obligation</small></div>
             <div class="confidence"><span>CONFIDENCE</span><strong id="confidence-score">—</strong></div>
           </div>
           <button id="run-analysis" class="button primary run-button" type="button"><span class="run-icon">▶</span><span class="run-label">Run complete analysis</span><small>Executes 5 live API calls</small></button>
@@ -69,7 +69,7 @@
     </section>
 
     <section id="architecture" class="architecture section-wrap">
-      <div class="section-heading light"><div><span class="kicker">SYSTEM DESIGN</span><h2>Built for traceability,<br>designed for production.</h2></div><p>Layered services keep ingestion, retrieval, decision logic and verification independently testable.</p></div>
+      <div class="section-heading light"><div><span class="kicker">SYSTEM DESIGN</span><h2>Technical architecture</h2></div><p>Independent services for ingestion, retrieval, decision logic and verification.</p></div>
       <div class="architecture-flow" aria-label="System architecture">
         <div class="arch-node"><span>01</span><b>Sources</b><small>HTML · Text · PDF-ready</small></div><i>→</i><div class="arch-node"><span>02</span><b>Ingestion</b><small>Parsing · PII redaction</small></div><i>→</i><div class="arch-node active"><span>03</span><b>Retrieval</b><small>Hybrid · Evidence gate</small></div><i>→</i><div class="arch-node"><span>04</span><b>Analysis</b><small>Diff · Claims · Impact</small></div><i>→</i><div class="arch-node"><span>05</span><b>Delivery</b><small>REST API · Audit trail</small></div>
       </div>
@@ -77,7 +77,7 @@
     </section>
 
     <section id="metrics" class="metrics section-wrap">
-      <div class="section-heading"><div><span class="kicker">MEASURED QUALITY</span><h2>Evaluation, not intuition.</h2></div><p id="metrics-source">Looking for an evaluation report…</p></div>
+      <div class="section-heading"><div><span class="kicker">MEASURED QUALITY</span><h2>Evaluation results</h2></div><p id="metrics-source">Looking for an evaluation report…</p></div>
       <div class="metric-grid">
         <article><span>Recall@K</span><strong data-metric="recall_at_k">—</strong><div class="bar"><i data-bar="recall_at_k"></i></div><small>Evidence retrieval coverage</small></article>
         <article><span>MRR</span><strong data-metric="mrr">—</strong><div class="bar"><i data-bar="mrr"></i></div><small>First relevant result rank</small></article>
@@ -87,6 +87,6 @@
       <p class="metric-disclaimer">Metrics are read from the generated benchmark report. No values are hard-coded in this interface.</p>
     </section>
   </main>
-  <footer><span>RegLens · Regulatory Intelligence Assistant</span><span>Evidence-grounded by design · <a href="/docs">OpenAPI</a> · <a href="/health">Health</a></span></footer>
+  <footer><span>Regulatory Intelligence Assistant</span><span><a href="/docs">OpenAPI</a> · <a href="/health">Health</a> · <a href="/metrics">Metrics</a></span></footer>
 </body>
 </html>

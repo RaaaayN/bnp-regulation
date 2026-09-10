@@ -5,7 +5,7 @@ def test_demo_serves_interactive_portfolio(client) -> None:
     response = client.get("/demo")
 
     assert response.status_code == 200
-    assert "RegLens" in response.text
+    assert "Regulatory Intelligence Assistant" in response.text
     assert "Run complete analysis" in response.text
     assert 'src="/static/demo.js"' in response.text
     assert 'href="/static/demo.css"' in response.text
