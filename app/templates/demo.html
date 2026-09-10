@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence-grounded regulatory intelligence demonstration">
+  <title>RegLens — Regulatory Intelligence</title>
+  <link rel="stylesheet" href="/static/demo.css">
+  <script src="/static/demo.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="RegLens home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>RegLens</span></a>
+    <nav aria-label="Main navigation"><a href="#analysis">Analysis</a><a href="#architecture">Architecture</a><a href="#metrics">Evaluation</a></nav>
+    <div class="system-status"><span class="status-dot"></span><span>Systems operational</span></div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="eyebrow"><span>REGULATORY INTELLIGENCE</span><span class="eyebrow-line"></span> EVIDENCE FIRST</div>
+      <h1>Turn regulatory change<br>into <em>auditable action.</em></h1>
+      <p class="hero-copy">A production-minded pipeline that detects material changes, grounds every claim in source evidence, and maps obligations to internal controls.</p>
+      <div class="hero-actions"><a class="button primary" href="#analysis">Run live analysis <span>→</span></a><a class="button ghost" href="/docs">Explore API</a></div>
+      <div class="hero-proof"><div><strong>5-stage</strong><span>auditable pipeline</span></div><div><strong>Fail closed</strong><span>without evidence</span></div><div><strong>Deterministic</strong><span>change detection</span></div></div>
+    </section>
+
+    <section id="analysis" class="workspace section-wrap">
+      <div class="section-heading"><div><span class="kicker">LIVE WORKBENCH</span><h2>Regulatory change analysis</h2></div><div class="live-badge"><span></span> Connected to FastAPI</div></div>
+      <div class="workbench">
+        <aside class="pipeline-card">
+          <p class="card-label">ANALYSIS PIPELINE</p>
+          <ol class="pipeline" aria-label="Analysis progress">
+            <li data-step="ingest"><span>01</span><div><strong>Ingest source</strong><small>Parse &amp; sanitize</small></div><b>✓</b></li>
+            <li data-step="retrieve"><span>02</span><div><strong>Retrieve evidence</strong><small>Hybrid search</small></div><b>✓</b></li>
+            <li data-step="compare"><span>03</span><div><strong>Detect change</strong><small>Semantic diff</small></div><b>✓</b></li>
+            <li data-step="review"><span>04</span><div><strong>Verify claims</strong><small>Citation guardrail</small></div><b>✓</b></li>
+            <li data-step="impact"><span>05</span><div><strong>Map impact</strong><small>Controls &amp; policies</small></div><b>✓</b></li>
+          </ol>
+          <div class="trust-note"><span>◆</span><p><strong>Human-in-the-loop</strong><br>Every recommendation requires analyst validation.</p></div>
+        </aside>
+
+        <div class="analysis-card">
+          <div class="analysis-head"><div><span class="case-id">EBA / MODEL RISK / ART. 12.3</span><h3>Obligation monitoring review</h3></div><span class="priority">HIGH PRIORITY</span></div>
+          <div class="diff-grid">
+            <article class="version old"><div><span>PREVIOUS · 2025</span><code>v1.0</code></div><p>Institutions <mark>should</mark> review model monitoring controls annually.</p><footer>Article 12.3 · EBA Model Risk Guidelines</footer></article>
+            <article class="version current"><div><span>CURRENT · 2026</span><code>v2.0</code></div><p>Institutions <mark>must</mark> review model monitoring controls annually.</p><footer>Article 12.3 · EBA Model Risk Guidelines</footer></article>
+          </div>
+          <div class="signal-row">
+            <div class="score-ring"><span id="materiality-score">—</span><small>MATERIALITY</small></div>
+            <div class="signal-copy"><span class="card-label">DETECTED SIGNAL</span><strong id="signal-label">Ready to analyse</strong><small>Modal verb transition · recommendation → binding obligation</small></div>
+            <div class="confidence"><span>CONFIDENCE</span><strong id="confidence-score">—</strong></div>
+          </div>
+          <button id="run-analysis" class="button primary run-button" type="button"><span class="run-icon">▶</span><span class="run-label">Run complete analysis</span><small>Executes 5 live API calls</small></button>
+          <p id="run-status" class="run-status" role="status" aria-live="polite">Ready · no mocked analysis results</p>
+        </div>
+      </div>
+
+      <div class="results-grid" id="results" aria-live="polite">
+        <article class="result-card evidence-card">
+          <div class="result-title"><span class="icon-box">❝</span><div><small>GROUNDED EVIDENCE</small><h3>Citation</h3></div><span class="verified" id="citation-state">PENDING</span></div>
+          <blockquote id="citation-text">Run the workflow to retrieve the authoritative source passage.</blockquote>
+          <div class="citation-meta"><span id="citation-source">Source —</span><span id="citation-score">Relevance —</span></div>
+        </article>
+        <article class="result-card impact-card">
+          <div class="result-title"><span class="icon-box">⌁</span><div><small>IMPACT MAPPING</small><h3>Affected artefacts</h3></div></div>
+          <ul id="impact-list"><li class="placeholder">Potential impacts will appear after analysis.</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture" class="architecture section-wrap">
+      <div class="section-heading light"><div><span class="kicker">SYSTEM DESIGN</span><h2>Built for traceability,<br>designed for production.</h2></div><p>Layered services keep ingestion, retrieval, decision logic and verification independently testable.</p></div>
+      <div class="architecture-flow" aria-label="System architecture">
+        <div class="arch-node"><span>01</span><b>Sources</b><small>HTML · Text · PDF-ready</small></div><i>→</i><div class="arch-node"><span>02</span><b>Ingestion</b><small>Parsing · PII redaction</small></div><i>→</i><div class="arch-node active"><span>03</span><b>Retrieval</b><small>Hybrid · Evidence gate</small></div><i>→</i><div class="arch-node"><span>04</span><b>Analysis</b><small>Diff · Claims · Impact</small></div><i>→</i><div class="arch-node"><span>05</span><b>Delivery</b><small>REST API · Audit trail</small></div>
+      </div>
+      <div class="tech-stack"><span>Python 3.12</span><span>FastAPI</span><span>Pydantic v2</span><span>PostgreSQL 16</span><span>pgvector</span><span>FalkorDB</span><span>SQLAlchemy</span><span>Docker</span><span>Pytest</span><span>Ruff</span></div>
+    </section>
+
+    <section id="metrics" class="metrics section-wrap">
+      <div class="section-heading"><div><span class="kicker">MEASURED QUALITY</span><h2>Evaluation, not intuition.</h2></div><p id="metrics-source">Looking for an evaluation report…</p></div>
+      <div class="metric-grid">
+        <article><span>Recall@K</span><strong data-metric="recall_at_k">—</strong><div class="bar"><i data-bar="recall_at_k"></i></div><small>Evidence retrieval coverage</small></article>
+        <article><span>MRR</span><strong data-metric="mrr">—</strong><div class="bar"><i data-bar="mrr"></i></div><small>First relevant result rank</small></article>
+        <article><span>Precision</span><strong data-metric="precision">—</strong><div class="bar"><i data-bar="precision"></i></div><small>Material-change classification</small></article>
+        <article><span>F1 score</span><strong data-metric="f1">—</strong><div class="bar"><i data-bar="f1"></i></div><small>Precision / recall balance</small></article>
+      </div>
+      <p class="metric-disclaimer">Metrics are read from the generated benchmark report. No values are hard-coded in this interface.</p>
+    </section>
+  </main>
+  <footer><span>RegLens · Regulatory Intelligence Assistant</span><span>Evidence-grounded by design · <a href="/docs">OpenAPI</a> · <a href="/health">Health</a></span></footer>
+</body>
+</html>
