@@ -1,4 +1,4 @@
-.PHONY: help install lint test run docker-build docker-up docker-down docker-logs docker-ps clean
+.PHONY: help install lint test benchmark run demo docker-build docker-up docker-down docker-logs docker-ps clean
 
 help: ## List available targets.
 	@awk 'BEGIN {FS = ":.*## "; printf "Usage: make <target>\n\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -12,8 +12,14 @@ lint: ## Run static checks.
 test: ## Run the test suite.
 	python -m pytest
 
+benchmark: ## Recompute the versioned synthetic quality benchmark.
+	python scripts/run_benchmark.py --output artifacts/evaluation-report.json
+
 run: ## Run the API locally with automatic reload.
 	python -m uvicorn app.main:app --reload --host 0.0.0.0 --port $${API_PORT:-8000}
+
+demo: docker-up ## Start the stack and print the interactive demo URL.
+	@echo "Demo: http://localhost:$${API_PORT:-8000}/demo"
 
 docker-build: ## Build the API image.
 	docker compose build

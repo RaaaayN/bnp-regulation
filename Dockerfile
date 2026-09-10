@@ -25,6 +25,7 @@ RUN python -m pip install --no-cache-dir /wheels/*.whl \
     && rm -rf /wheels
 
 WORKDIR /srv/app
+COPY --chown=app:app artifacts/evaluation-report.json /srv/app/artifacts/evaluation-report.json
 USER app
 
 EXPOSE 8000
