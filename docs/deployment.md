@@ -5,6 +5,7 @@
 - Docker Engine récent avec le plugin Compose v2 ;
 - au moins 4 Go de mémoire disponible pour les trois conteneurs ;
 - ports 8000, 5432 et 6379 disponibles, ou remplacés dans `.env`.
+- port 9090 disponible pour Prometheus, ou remplacé dans `.env`.
 
 ## Démarrage local
 
@@ -42,6 +43,7 @@ utiles sont documentés dans `.env.example`.
 | `RIA_AUTO_CREATE_SCHEMA` | activé par Compose | Création du schéma au démarrage |
 | `POSTGRES_*` | voir exemple | Base, utilisateur, mot de passe et port PostgreSQL |
 | `FALKORDB_PORT` | `6379` | Port FalkorDB publié localement |
+| `PROMETHEUS_PORT` | `9090` | Interface locale Prometheus |
 
 La chaîne `RIA_DATABASE_URL` est assemblée par Compose avec les variables
 `POSTGRES_*`. Le conteneur reçoit également `FALKORDB_URL`; l'application ne la

@@ -8,6 +8,48 @@ les conclusions dont les sources ne peuvent pas être vérifiées.
 > L'application assiste l'analyse. Elle ne fournit pas de conseil juridique et
 > ne prend aucune décision de conformité autonome.
 
+Projet de portfolio indépendant construit sur des données synthétiques. Il n'est
+ni affilié à BNP Paribas ni utilisé par le Groupe.
+
+## Démonstration
+
+```bash
+make demo
+```
+
+- interface d'analyse : <http://localhost:8000/demo> ;
+- contrats OpenAPI : <http://localhost:8000/docs> ;
+- métriques Prometheus : <http://localhost:8000/metrics> ;
+- serveur Prometheus : <http://localhost:9090>.
+
+Le bouton **Run complete analysis** exécute réellement les cinq appels API :
+ingestion, retrieval, comparaison, revue des citations et analyse d'impact.
+
+## Résultats mesurés
+
+Résultats du benchmark d'acceptation synthétique `v1.0.0`. Ils vérifient le
+comportement déterministe du MVP et ne prétendent pas mesurer une généralisation
+sur l'ensemble du corpus réglementaire européen.
+
+| Mesure | Résultat | Échantillon |
+|---|---:|---:|
+| Recall@5 | 100 % | 6 requêtes |
+| Mean Reciprocal Rank | 100 % | 6 requêtes |
+| Détection de changement — précision / rappel / F1 | 100 / 100 / 100 % | 6 changements |
+| Classification du reviewer | 100 % | 3 cas labellisés |
+| Tests automatisés | 35 réussis | unitaires + intégration |
+
+Reproduire les chiffres :
+
+```bash
+uv run python scripts/run_benchmark.py \
+  --output artifacts/evaluation-report.json
+```
+
+Le rapport conserve la version et le SHA-256 du jeu de données. Les proportions
+de claims et citations supportés sont aussi publiées dans le rapport, séparément
+des métriques de performance du reviewer.
+
 ## Fonctionnalités
 
 - parsing texte/HTML et découpage par titres, articles et paragraphes ;
@@ -18,6 +60,7 @@ les conclusions dont les sources ne peuvent pas être vérifiées.
 - reviewer fail-closed vérifiant chaque extrait cité dans sa source ;
 - masquage d'identifiants et détection de prompt injection dans les documents ;
 - métriques hors ligne Recall@K, MRR, précision, rappel et F1 ;
+- instrumentation HTTP et exposition Prometheus ;
 - persistance PostgreSQL auditable et infrastructure FalkorDB prête à étendre ;
 - image Docker non-root et stack Compose avec healthchecks.
 
@@ -29,7 +72,8 @@ docker compose up --build --detach --wait
 curl --fail http://localhost:8000/health
 ```
 
-L'interface OpenAPI est alors disponible sur <http://localhost:8000/docs>.
+Compose démarre quatre services avec healthchecks : API, PostgreSQL/pgvector,
+FalkorDB et Prometheus.
 
 ## Développement local
 
@@ -86,8 +130,9 @@ flowchart LR
     Analysis --> Reviewer[Reviewer fail-closed]
     Reviewer --> API[FastAPI]
     API --> Analyst[Analyste conformité]
-    Ingestion -.-> PG[(PostgreSQL / pgvector)]
-    Analysis -.-> KG[(FalkorDB)]
+    API --> Metrics[Prometheus metrics]
+    Ingestion -. persistance prévue .-> PG[(PostgreSQL / pgvector)]
+    Analysis -. graphe prévu .-> KG[(FalkorDB)]
 ```
 
 Les choix, flux de données, frontières de confiance et limites sont détaillés
@@ -104,4 +149,6 @@ le client FalkorDB restent des évolutions. Les algorithmes déterministes rende
 la démo locale reproductible ; un fournisseur LLM et des embeddings peuvent être
 ajoutés derrière les mêmes contrats après évaluation.
 
-Aucune performance de qualité n'est revendiquée sans jeu de référence versionné.
+Les scores affichés proviennent uniquement du petit benchmark synthétique
+versionné. Ils doivent être complétés avec un corpus public annoté avant toute
+conclusion sur la qualité en production.

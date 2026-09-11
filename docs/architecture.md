@@ -13,8 +13,8 @@ Les principes structurants sont les suivants :
 - le contenu documentaire est traité comme une donnée non fiable, jamais comme
   une instruction adressée au modèle ;
 - les impacts sont qualifiés de potentiels jusqu'à validation humaine ;
-- PostgreSQL/pgvector porte le corpus et la recherche sémantique, tandis que
-  FalkorDB porte les relations métier ;
+- PostgreSQL/pgvector et FalkorDB sont provisionnés comme trajectoire de
+  persistance ; le chemin HTTP courant reste déterministe et en mémoire ;
 - les composants spécialisés restent orchestrés et vérifiés plutôt que de former
   une chaîne d'agents autonomes sans contrôle.
 
@@ -23,15 +23,17 @@ Les principes structurants sont les suivants :
 ```mermaid
 flowchart LR
     Analyste[Analyste conformité] -->|HTTP / JSON| API[FastAPI]
-    API -->|SQL + recherche vectorielle| PG[(PostgreSQL + pgvector)]
-    API -->|Cypher sur protocole Redis| Graph[(FalkorDB)]
-    Sources[EBA / ECB / EUR-Lex] -.->|ingestion planifiée, cible MVP| API
-    API -.->|requêtes contrôlées, cible MVP| LLM[Fournisseur LLM]
+    API -.->|adaptateur SQL prêt| PG[(PostgreSQL + pgvector)]
+    API -.->|intégration future| Graph[(FalkorDB)]
+    Prom[Prometheus] -->|scrape /metrics| API
+    Sources[EBA / ECB / EUR-Lex] -.->|connecteurs futurs| API
+    API -.->|extension évaluée avant activation| LLM[Fournisseur LLM]
 ```
 
-Le déploiement Docker local fournit aujourd'hui trois services : `api`,
-`postgres` et `falkordb`. L'endpoint `GET /health` est une sonde de vivacité de
-l'API. Il ne constitue pas encore une sonde de disponibilité complète des bases.
+Le déploiement Docker local fournit quatre services : `api`, `postgres`,
+`falkordb` et `prometheus`. L'endpoint `GET /health` est une sonde de vivacité de
+l'API ; `/metrics` fournit les compteurs et histogrammes HTTP. La sonde de
+vivacité ne constitue pas encore une readiness complète des bases.
 
 ## Composants applicatifs cibles
 
@@ -41,9 +43,9 @@ flowchart TB
     Orchestrator --> Retrieval[Retrieval]
     Orchestrator --> Change[Analyse de changement]
     Orchestrator --> Impact[Analyse d'impact]
-    Retrieval --> PG[(Corpus + vecteurs)]
-    Change --> PG
-    Impact --> KG[(Knowledge graph)]
+    Retrieval -. persistance future .-> PG[(Corpus + vecteurs)]
+    Change -. persistance future .-> PG
+    Impact -. intégration future .-> KG[(Knowledge graph)]
     Retrieval --> Reviewer[Reviewer]
     Change --> Reviewer
     Impact --> Reviewer
@@ -69,18 +71,14 @@ flowchart TB
 sequenceDiagram
     actor U as Analyste
     participant A as API / Orchestrateur
-    participant P as PostgreSQL/pgvector
-    participant G as FalkorDB
-    participant M as LLM
+    participant I as Index mémoire
     participant R as Reviewer
 
     U->>A: Compare V1 et V2
-    A->>P: Charge sections et métadonnées
-    P-->>A: Passages versionnés
-    A->>M: Compare les sections avec contexte délimité
-    M-->>A: Changements structurés + claims
-    A->>G: Recherche politiques et contrôles liés
-    G-->>A: Chemins d'impact potentiels
+    A->>I: Indexe et recherche les passages
+    I-->>A: Passages classés et cités
+    A->>A: Compare les sections de façon déterministe
+    A->>A: Rapproche les concepts et artefacts configurés
     A->>R: Claims, preuves et chemins
     R-->>A: supported / partial / unsupported
     A-->>U: Analyse citée ou preuve insuffisante
@@ -146,6 +144,7 @@ données dans des volumes nommés.
   survivre aux redémarrages et permettre plusieurs réplicas.
 - L'analyse actuelle est déterministe et explicable ; l'intégration d'embeddings,
   d'un reranker et d'un LLM reste à mesurer avant activation.
-- Il n'existe pas encore d'interface utilisateur dédiée.
-- Aucune métrique de qualité ne doit être revendiquée avant évaluation sur un jeu
-  de référence versionné.
+- L'interface dédiée exécute le scénario de démonstration mais n'implémente ni
+  authentification ni gestion documentaire complète.
+- Les métriques actuelles viennent d'un petit benchmark synthétique versionné ;
+  elles ne démontrent pas une généralisation sur des réglementations réelles.
