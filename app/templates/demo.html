@@ -32,7 +32,7 @@
           <ol class="pipeline" aria-label="Analysis progress">
             <li data-step="ingest"><span>01</span><div><strong>Ingest source</strong><small>Parse &amp; sanitize</small></div><b>✓</b></li>
             <li data-step="retrieve"><span>02</span><div><strong>Retrieve evidence</strong><small>Hybrid search</small></div><b>✓</b></li>
-            <li data-step="compare"><span>03</span><div><strong>Detect change</strong><small>Semantic diff</small></div><b>✓</b></li>
+            <li data-step="compare"><span>03</span><div><strong>Detect change</strong><small>Structured diff</small></div><b>✓</b></li>
             <li data-step="review"><span>04</span><div><strong>Verify claims</strong><small>Citation guardrail</small></div><b>✓</b></li>
             <li data-step="impact"><span>05</span><div><strong>Map impact</strong><small>Controls &amp; policies</small></div><b>✓</b></li>
           </ol>
@@ -71,7 +71,7 @@
     <section id="architecture" class="architecture section-wrap">
       <div class="section-heading light"><div><span class="kicker">SYSTEM DESIGN</span><h2>Technical architecture</h2></div><p>Independent services for ingestion, retrieval, decision logic and verification.</p></div>
       <div class="architecture-flow" aria-label="System architecture">
-        <div class="arch-node"><span>01</span><b>Sources</b><small>HTML · Text · PDF-ready</small></div><i>→</i><div class="arch-node"><span>02</span><b>Ingestion</b><small>Parsing · PII redaction</small></div><i>→</i><div class="arch-node active"><span>03</span><b>Retrieval</b><small>Hybrid · Evidence gate</small></div><i>→</i><div class="arch-node"><span>04</span><b>Analysis</b><small>Diff · Claims · Impact</small></div><i>→</i><div class="arch-node"><span>05</span><b>Delivery</b><small>REST API · Audit trail</small></div>
+        <div class="arch-node"><span>01</span><b>Sources</b><small>HTML · Text</small></div><i>→</i><div class="arch-node"><span>02</span><b>Ingestion</b><small>Parsing · PII redaction</small></div><i>→</i><div class="arch-node active"><span>03</span><b>Retrieval</b><small>BM25 · Evidence gate</small></div><i>→</i><div class="arch-node"><span>04</span><b>Analysis</b><small>Diff · Claims · Impact</small></div><i>→</i><div class="arch-node"><span>05</span><b>Delivery</b><small>REST API · Evidence</small></div>
       </div>
       <div class="tech-stack"><span>Python 3.12</span><span>FastAPI</span><span>Pydantic v2</span><span>PostgreSQL 16</span><span>pgvector</span><span>FalkorDB</span><span>SQLAlchemy</span><span>Docker</span><span>Pytest</span><span>Ruff</span></div>
     </section>
