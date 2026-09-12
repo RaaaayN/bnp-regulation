@@ -37,7 +37,10 @@ class GeminiJudgeRequest(BaseModel):
 class GeminiJudgeResult(BaseModel):
     """Machine-readable LLM-as-a-judge verdict."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    # Gemini's response_schema subset does not accept JSON Schema's
+    # ``additionalProperties`` keyword, which Pydantic emits for
+    # ``extra="forbid"``. Validation remains typed and range-constrained.
+    model_config = ConfigDict(frozen=True)
 
     groundedness: float = Field(ge=0.0, le=1.0)
     correctness: float = Field(ge=0.0, le=1.0)
@@ -74,7 +77,7 @@ class GeminiJudge:
         self,
         *,
         api_key: SecretStr | str | None = None,
-        model: str = "gemini-2.5-flash",
+        model: str = "gemini-3.6-flash",
         cache_dir: Path | str = Path("artifacts/gemini-cache"),
         max_attempts: int = 3,
         backoff_seconds: float = 1.0,

@@ -25,7 +25,7 @@ class Settings(BaseSettings):
         repr=False,
         validation_alias=AliasChoices("RIA_GEMINI_API_KEY", "GEMINI_API_KEY"),
     )
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.6-flash"
     gemini_embedding_model: str = "gemini-embedding-001"
     gemini_embedding_dimensions: int | None = Field(default=768, ge=128, le=3072)
     gemini_cache_dir: Path = Path("artifacts/gemini-cache")
