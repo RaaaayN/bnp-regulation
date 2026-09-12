@@ -6,7 +6,8 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+artifacts/public-corpus/
+artifacts/gemini-cache/
 dist/
 *.egg-info/
 .DS_Store
-

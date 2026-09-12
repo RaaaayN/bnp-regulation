@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "corpus": {
+    "id": "eu-financial-regulation-primary-sources",
+    "title": "EU regulatory primary-source corpus",
+    "language": "en",
+    "publisher": "Publications Office of the European Union",
+    "provenance_policy": "Only primary-source documents identified by EUR-Lex are accepted. Machine-readable snapshots are acquired from the Publications Office Cellar repository used by EUR-Lex. Downloaded bytes are never committed and every snapshot is recorded with its resolved URL, retrieval time, byte count and SHA-256 digest.",
+    "acquisition_documentation_url": "https://op.europa.eu/en/web/cellar/cellar-data/publications",
+    "rights_notice_url": "https://eur-lex.europa.eu/content/legal-notice/legal-notice.html"
+  },
+  "sources": [
+    {
+      "id": "dora-2022-2554",
+      "short_title": "Digital Operational Resilience Act (DORA)",
+      "celex": "32022R2554",
+      "eli": "http://data.europa.eu/eli/reg/2022/2554/oj",
+      "official_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32022R2554",
+      "acquisition_url": "https://publications.europa.eu/resource/celex/32022R2554",
+      "jurisdiction": "European Union",
+      "document_type": "Regulation"
+    },
+    {
+      "id": "gdpr-2016-679",
+      "short_title": "General Data Protection Regulation (GDPR)",
+      "celex": "32016R0679",
+      "eli": "http://data.europa.eu/eli/reg/2016/679/oj",
+      "official_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679",
+      "acquisition_url": "https://publications.europa.eu/resource/celex/32016R0679",
+      "jurisdiction": "European Union",
+      "document_type": "Regulation"
+    },
+    {
+      "id": "ai-act-2024-1689",
+      "short_title": "Artificial Intelligence Act",
+      "celex": "32024R1689",
+      "eli": "http://data.europa.eu/eli/reg/2024/1689/oj",
+      "official_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32024R1689",
+      "acquisition_url": "https://publications.europa.eu/resource/celex/32024R1689",
+      "jurisdiction": "European Union",
+      "document_type": "Regulation"
+    },
+    {
+      "id": "mica-2023-1114",
+      "short_title": "Markets in Crypto-assets Regulation (MiCA)",
+      "celex": "32023R1114",
+      "eli": "http://data.europa.eu/eli/reg/2023/1114/oj",
+      "official_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32023R1114",
+      "acquisition_url": "https://publications.europa.eu/resource/celex/32023R1114",
+      "jurisdiction": "European Union",
+      "document_type": "Regulation"
+    },
+    {
+      "id": "crr-2013-575",
+      "short_title": "Capital Requirements Regulation (CRR)",
+      "celex": "32013R0575",
+      "eli": "http://data.europa.eu/eli/reg/2013/575/oj",
+      "official_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32013R0575",
+      "acquisition_url": "https://publications.europa.eu/resource/celex/32013R0575",
+      "jurisdiction": "European Union",
+      "document_type": "Regulation"
+    }
+  ]
+}
