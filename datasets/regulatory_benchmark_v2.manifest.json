@@ -1,0 +1,56 @@
+{
+  "counts": {
+    "by_difficulty": {
+      "easy": {
+        "change_cases": 40,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      },
+      "hard": {
+        "change_cases": 40,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      },
+      "medium": {
+        "change_cases": 40,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      }
+    },
+    "by_split": {
+      "dev": {
+        "change_cases": 40,
+        "documents": 10,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      },
+      "test": {
+        "change_cases": 40,
+        "documents": 10,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      },
+      "train": {
+        "change_cases": 40,
+        "documents": 10,
+        "grounding_claims": 20,
+        "retrieval_queries": 20
+      }
+    },
+    "change_cases": 120,
+    "documents": 30,
+    "grounding_claims": 60,
+    "material_changes": 60,
+    "non_material_changes": 60,
+    "retrieval_queries": 60
+  },
+  "dataset_file": "regulatory_benchmark_v2.json",
+  "dataset_sha256": "af6477a4b102489b364e575ad960d46ac31ccefcf0ff6de66365ef3d2db8714b",
+  "provenance": {
+    "disclaimer": "All clauses, identifiers, dates and labels are fictional test fixtures. They are not quotations from, summaries of, or legal interpretations of any regulation or supervisory publication.",
+    "generator": "scripts/build_synthetic_benchmark.py",
+    "kind": "synthetic"
+  },
+  "rebuild": "python scripts/build_synthetic_benchmark.py",
+  "schema_version": "1.0"
+}

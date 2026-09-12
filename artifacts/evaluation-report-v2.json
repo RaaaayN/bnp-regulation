@@ -1,0 +1,1743 @@
+{
+  "benchmark": {
+    "baseline": "deterministic",
+    "bootstrap": {
+      "samples": 1000,
+      "seed": 20260915
+    },
+    "dataset": "Regulatory intelligence synthetic challenge benchmark",
+    "judge_mode": "both",
+    "schema_version": "2.0",
+    "sha256": "af6477a4b102489b364e575ad960d46ac31ccefcf0ff6de66365ef3d2db8714b",
+    "split": "test",
+    "version": "2.0.0"
+  },
+  "details": {
+    "changes": [
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-081",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "numeric_threshold_change",
+          "deadline_change"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-082",
+        "materiality": "medium",
+        "materiality_score": 0.3898,
+        "predicted_material": true,
+        "signals": [
+          "numeric_threshold_changed"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-083",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-084",
+        "materiality": "low",
+        "materiality_score": 0.2406,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-085",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "added_requirement",
+          "structure_only"
+        ],
+        "change_type": "added",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-086",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "new_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-087",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-088",
+        "materiality": "low",
+        "materiality_score": 0.2406,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-089",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "removed_requirement",
+          "structure_only"
+        ],
+        "change_type": "removed",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-090",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "removed_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-091",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-092",
+        "materiality": "low",
+        "materiality_score": 0.2425,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-093",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "numeric_threshold_change",
+          "deadline_change"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-094",
+        "materiality": "medium",
+        "materiality_score": 0.3909,
+        "predicted_material": true,
+        "signals": [
+          "numeric_threshold_changed"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-095",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-096",
+        "materiality": "low",
+        "materiality_score": 0.2446,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-097",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "added_requirement",
+          "structure_only"
+        ],
+        "change_type": "added",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-098",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "new_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-099",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-100",
+        "materiality": "low",
+        "materiality_score": 0.2388,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-101",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "removed_requirement",
+          "structure_only"
+        ],
+        "change_type": "removed",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-102",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "removed_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-103",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-104",
+        "materiality": "low",
+        "materiality_score": 0.2425,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-105",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "numeric_threshold_change",
+          "deadline_change"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-106",
+        "materiality": "medium",
+        "materiality_score": 0.3895,
+        "predicted_material": true,
+        "signals": [
+          "numeric_threshold_changed"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-107",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-108",
+        "materiality": "low",
+        "materiality_score": 0.2394,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-109",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "added_requirement",
+          "structure_only"
+        ],
+        "change_type": "added",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-110",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "new_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-111",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-112",
+        "materiality": "low",
+        "materiality_score": 0.2419,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": true,
+        "id": "chg-113",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "removed_requirement",
+          "structure_only"
+        ],
+        "change_type": "removed",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-114",
+        "materiality": "high",
+        "materiality_score": 0.75,
+        "predicted_material": true,
+        "signals": [
+          "removed_section"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "easy",
+        "expected_material": false,
+        "id": "chg-115",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-116",
+        "materiality": "low",
+        "materiality_score": 0.2412,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "modal_strengthening"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": true,
+        "id": "chg-117",
+        "materiality": "high",
+        "materiality_score": 0.9,
+        "predicted_material": true,
+        "signals": [
+          "obligation_strengthened",
+          "binding_language_added"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "numeric_threshold_change",
+          "deadline_change"
+        ],
+        "change_type": "modified",
+        "difficulty": "easy",
+        "expected_material": true,
+        "id": "chg-118",
+        "materiality": "medium",
+        "materiality_score": 0.3901,
+        "predicted_material": true,
+        "signals": [
+          "numeric_threshold_changed"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "section_renumbering",
+          "structure_only"
+        ],
+        "change_type": "unchanged",
+        "difficulty": "medium",
+        "expected_material": false,
+        "id": "chg-119",
+        "materiality": "low",
+        "materiality_score": 0.0,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "cosmetic_edit",
+          "hard_negative"
+        ],
+        "change_type": "modified",
+        "difficulty": "hard",
+        "expected_material": false,
+        "id": "chg-120",
+        "materiality": "low",
+        "materiality_score": 0.2419,
+        "predicted_material": false,
+        "signals": [],
+        "split": "test"
+      }
+    ],
+    "evidence_reviews": [
+      {
+        "claim_id": "grd-041",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-042",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-043",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-044",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-045",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-046",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-047",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-048",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-049",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-050",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-051",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-052",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-053",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-054",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-055",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-056",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-057",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-058",
+        "difficulty": "easy",
+        "expected_status": "supported",
+        "split": "test",
+        "status": "supported",
+        "supported_citations": 1,
+        "unsupported_citations": 0
+      },
+      {
+        "claim_id": "grd-059",
+        "difficulty": "medium",
+        "expected_status": "partially_supported",
+        "split": "test",
+        "status": "partially_supported",
+        "supported_citations": 1,
+        "unsupported_citations": 1
+      },
+      {
+        "claim_id": "grd-060",
+        "difficulty": "hard",
+        "expected_status": "unsupported",
+        "split": "test",
+        "status": "unsupported",
+        "supported_citations": 0,
+        "unsupported_citations": 1
+      }
+    ],
+    "gemini_judge": [
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "medium",
+        "groundedness": 1.0,
+        "id": "ret-041",
+        "passed": true,
+        "rationale": "The answer directly and accurately states the retention period of 9 years for business continuity control evidence as supported by the evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.5,
+        "correctness": 0.5,
+        "difficulty": "hard",
+        "groundedness": 1.0,
+        "id": "ret-042",
+        "passed": false,
+        "rationale": "The evidence does not mention synthetic scenario TEST-01 or an operating blueprint. Selecting the privacy response operating plan cadence assumes information not provided in the question or evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "easy",
+        "groundedness": 1.0,
+        "id": "ret-043",
+        "passed": true,
+        "rationale": "The answer accurately and completely answers the question using only the provided evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.2,
+        "correctness": 0.2,
+        "difficulty": "medium",
+        "groundedness": 0.5,
+        "id": "ret-044",
+        "passed": false,
+        "rationale": "The evidence does not contain any reference to synthetic scenario TEST-02 or specify which operating plan corresponds to the operating blueprint for TEST-02. Asserting that the privacy response operating plan applies to TEST-02 is unsupported.",
+        "unsupported_claims": [
+          "The oversight committee must approve the privacy response operating plan every 6 months (as the answer for synthetic scenario TEST-02)."
+        ]
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "hard",
+        "groundedness": 1.0,
+        "id": "ret-045",
+        "passed": true,
+        "rationale": "The answer accurately and completely answers the question using the provided evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.5,
+        "correctness": 0.5,
+        "difficulty": "easy",
+        "groundedness": 1.0,
+        "id": "ret-046",
+        "passed": false,
+        "rationale": "The provided answer quotes a statement directly from the evidence, but the evidence does not mention 'synthetic scenario TEST-03'. Therefore, it cannot be verified whether the privacy response operating plan corresponds to TEST-03.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "medium",
+        "groundedness": 1.0,
+        "id": "ret-047",
+        "passed": true,
+        "rationale": "The answer accurately and completely answers the question using the exact information provided in the evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.5,
+        "correctness": 0.5,
+        "difficulty": "hard",
+        "groundedness": 0.5,
+        "id": "ret-048",
+        "passed": false,
+        "rationale": "The provided evidence does not mention 'synthetic scenario TEST-04' or 'operating blueprint', so asserting that the privacy response operating plan is the answer for TEST-04 is unsupported by the context.",
+        "unsupported_claims": [
+          "The oversight committee must approve the privacy response operating plan every 6 months. [in response to scenario TEST-04]"
+        ]
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "easy",
+        "groundedness": 1.0,
+        "id": "ret-049",
+        "passed": true,
+        "rationale": "The response accurately answers the question based on the provided evidence, correctly stating that operational resilience control evidence must be retained for 6 years after closure.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.4,
+        "correctness": 0.2,
+        "difficulty": "medium",
+        "groundedness": 1.0,
+        "id": "ret-050",
+        "passed": false,
+        "rationale": "The text in the answer is directly supported by the evidence, but the provided evidence does not mention 'synthetic scenario TEST-05' or 'operating blueprint', making it impossible to correctly identify which operating plan corresponds to the question.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "hard",
+        "groundedness": 1.0,
+        "id": "ret-051",
+        "passed": true,
+        "rationale": "The answer directly and accurately answers the question based on the provided evidence, stating that privacy response control evidence must be retained for 7 years after closure.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "easy",
+        "groundedness": 1.0,
+        "id": "ret-052",
+        "passed": true,
+        "rationale": "The answer directly quotes a fact supported by the provided evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "medium",
+        "groundedness": 1.0,
+        "id": "ret-053",
+        "passed": true,
+        "rationale": "The answer directly and accurately answers the question based on the provided evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.0,
+        "correctness": 0.2,
+        "difficulty": "hard",
+        "groundedness": 0.5,
+        "id": "ret-054",
+        "passed": false,
+        "rationale": "The evidence does not contain any reference to synthetic scenario TEST-07, making the connection between TEST-07 and the privacy response operating plan unsupported.",
+        "unsupported_claims": [
+          "The oversight committee must approve the privacy response operating plan every 6 months."
+        ]
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "easy",
+        "groundedness": 1.0,
+        "id": "ret-055",
+        "passed": true,
+        "rationale": "The answer directly and accurately states the retention period for treasury controls control evidence as 9 years after closure, matching the evidence provided.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.3,
+        "correctness": 0.3,
+        "difficulty": "medium",
+        "groundedness": 0.4,
+        "id": "ret-056",
+        "passed": false,
+        "rationale": "The evidence does not mention 'synthetic scenario TEST-08' or an 'operating blueprint'. The answer assumes the question refers specifically to the 'privacy response operating plan', which is not supported by the provided text.",
+        "unsupported_claims": [
+          "The oversight committee must approve the privacy response operating plan every 6 months."
+        ]
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "hard",
+        "groundedness": 1.0,
+        "id": "ret-057",
+        "passed": true,
+        "rationale": "The answer directly and accurately addresses the question using the exact facts provided in the evidence.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.0,
+        "correctness": 0.0,
+        "difficulty": "easy",
+        "groundedness": 0.0,
+        "id": "ret-058",
+        "passed": false,
+        "rationale": "The evidence does not mention synthetic scenario TEST-09 or an operating blueprint, nor does it specify that the privacy response operating plan is the relevant plan for this scenario.",
+        "unsupported_claims": [
+          "The oversight committee must approve the privacy response operating plan every 6 months."
+        ]
+      },
+      {
+        "completeness": 1.0,
+        "correctness": 1.0,
+        "difficulty": "medium",
+        "groundedness": 1.0,
+        "id": "ret-059",
+        "passed": true,
+        "rationale": "The answer directly and accurately addresses the question using the provided evidence, with no unsupported claims.",
+        "unsupported_claims": []
+      },
+      {
+        "completeness": 0.4,
+        "correctness": 0.4,
+        "difficulty": "hard",
+        "groundedness": 1.0,
+        "id": "ret-060",
+        "passed": false,
+        "rationale": "The statement provided in the answer exists in the evidence, but the evidence contains no mention of 'synthetic scenario TEST-10' or an 'operating blueprint'. Selecting the privacy response operating plan over the other operating plans listed in the evidence is unsupported by the context provided.",
+        "unsupported_claims": []
+      }
+    ],
+    "retrieval": [
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-01 > Business Continuity controls > Article 301"
+        ],
+        "hit_at_k": true,
+        "id": "ret-041",
+        "question": "For how many years must regulated firms retain business continuity control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-01 > Business Continuity controls > Article 301",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-01 > Business Continuity controls > Article 302"
+        ],
+        "hit_at_k": false,
+        "id": "ret-042",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-01?",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 311"
+        ],
+        "hit_at_k": true,
+        "id": "ret-043",
+        "question": "For how many years must regulated firms retain sanctions filtering control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 311",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312"
+        ],
+        "hit_at_k": true,
+        "id": "ret-044",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-02?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.25,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "hit_at_k": true,
+        "id": "ret-045",
+        "question": "For how many years must regulated firms retain records disposal control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-03 > Records Disposal controls > Article 321",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-01 > Business Continuity controls > Article 301"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-03 > Records Disposal controls > Article 322"
+        ],
+        "hit_at_k": false,
+        "id": "ret-046",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-03?",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-04 > Credit Review controls > Article 331"
+        ],
+        "hit_at_k": true,
+        "id": "ret-047",
+        "question": "For how many years must regulated firms retain credit review control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321",
+          "SYN-TEST-01 > Business Continuity controls > Article 301"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-04 > Credit Review controls > Article 332"
+        ],
+        "hit_at_k": true,
+        "id": "ret-048",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-04?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.5,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-05 > Operational Resilience controls > Article 341"
+        ],
+        "hit_at_k": true,
+        "id": "ret-049",
+        "question": "For how many years must regulated firms retain operational resilience control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-05 > Operational Resilience controls > Article 341",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-05 > Operational Resilience controls > Article 342"
+        ],
+        "hit_at_k": false,
+        "id": "ret-050",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-05?",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-06 > Privacy Response controls > Article 351"
+        ],
+        "hit_at_k": true,
+        "id": "ret-051",
+        "question": "For how many years must regulated firms retain privacy response control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 351",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352"
+        ],
+        "hit_at_k": true,
+        "id": "ret-052",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-06?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-07 > Third-Party Assurance controls > Article 361"
+        ],
+        "hit_at_k": true,
+        "id": "ret-053",
+        "question": "For how many years must regulated firms retain third-party assurance control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-07 > Third-Party Assurance controls > Article 361",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-07 > Third-Party Assurance controls > Article 362"
+        ],
+        "hit_at_k": false,
+        "id": "ret-054",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-07?",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-08 > Treasury Controls controls > Article 371"
+        ],
+        "hit_at_k": true,
+        "id": "ret-055",
+        "question": "For how many years must regulated firms retain treasury controls control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-08 > Treasury Controls controls > Article 371",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-08 > Treasury Controls controls > Article 372"
+        ],
+        "hit_at_k": false,
+        "id": "ret-056",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-08?",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381"
+        ],
+        "hit_at_k": true,
+        "id": "ret-057",
+        "question": "For how many years must regulated firms retain conduct monitoring control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-03 > Records Disposal controls > Article 321",
+          "SYN-TEST-01 > Business Continuity controls > Article 301"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "easy",
+        "expected": [
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382"
+        ],
+        "hit_at_k": true,
+        "id": "ret-058",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-09?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.3333,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "exact_terms",
+          "hard_negative"
+        ],
+        "difficulty": "medium",
+        "expected": [
+          "SYN-TEST-10 > Change Governance controls > Article 391"
+        ],
+        "hit_at_k": true,
+        "id": "ret-059",
+        "question": "For how many years must regulated firms retain change governance control evidence?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "retrieved": [
+          "SYN-TEST-10 > Change Governance controls > Article 391",
+          "SYN-TEST-04 > Credit Review controls > Article 331",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 381",
+          "SYN-TEST-03 > Records Disposal controls > Article 321",
+          "SYN-TEST-01 > Business Continuity controls > Article 301"
+        ],
+        "split": "test"
+      },
+      {
+        "challenge_tags": [
+          "paraphrase_without_lexical_overlap",
+          "hard_negative"
+        ],
+        "difficulty": "hard",
+        "expected": [
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "hit_at_k": true,
+        "id": "ret-060",
+        "question": "At what cadence does the governing body formally sign off the operating blueprint in synthetic scenario TEST-10?",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.2,
+        "retrieved": [
+          "SYN-TEST-06 > Privacy Response controls > Article 352",
+          "SYN-TEST-04 > Credit Review controls > Article 332",
+          "SYN-TEST-09 > Conduct Monitoring controls > Article 382",
+          "SYN-TEST-02 > Sanctions Filtering controls > Article 312",
+          "SYN-TEST-10 > Change Governance controls > Article 392"
+        ],
+        "split": "test"
+      }
+    ]
+  },
+  "summary": {
+    "by_difficulty": {
+      "easy": {
+        "change_detection": {
+          "confidence_intervals": {
+            "f1": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "f1": 1.0,
+          "false_negatives": 0,
+          "false_positives": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "true_positives": 7
+        },
+        "retrieval": {
+          "confidence_intervals": {
+            "mean_reciprocal_rank": {
+              "confidence_level": 0.95,
+              "lower": 0.3889,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            },
+            "recall_at_k": {
+              "confidence_level": 0.95,
+              "lower": 0.5,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "evaluated_cases": 6,
+          "mean_reciprocal_rank": 0.7222,
+          "recall_at_k": 0.8333
+        },
+        "reviewer_classification": {
+          "accuracy": 1.0,
+          "confidence_intervals": {
+            "accuracy": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "correct": 6,
+          "evaluated_cases": 6
+        }
+      },
+      "hard": {
+        "change_detection": {
+          "confidence_intervals": {
+            "f1": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "f1": 1.0,
+          "false_negatives": 0,
+          "false_positives": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "true_positives": 7
+        },
+        "retrieval": {
+          "confidence_intervals": {
+            "mean_reciprocal_rank": {
+              "confidence_level": 0.95,
+              "lower": 0.1996,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 0.8571
+            },
+            "recall_at_k": {
+              "confidence_level": 0.95,
+              "lower": 0.4286,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "evaluated_cases": 7,
+          "mean_reciprocal_rank": 0.5286,
+          "recall_at_k": 0.7143
+        },
+        "reviewer_classification": {
+          "accuracy": 1.0,
+          "confidence_intervals": {
+            "accuracy": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "correct": 7,
+          "evaluated_cases": 7
+        }
+      },
+      "medium": {
+        "change_detection": {
+          "confidence_intervals": {
+            "f1": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "f1": 1.0,
+          "false_negatives": 0,
+          "false_positives": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "true_positives": 6
+        },
+        "retrieval": {
+          "confidence_intervals": {
+            "mean_reciprocal_rank": {
+              "confidence_level": 0.95,
+              "lower": 0.25,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            },
+            "recall_at_k": {
+              "confidence_level": 0.95,
+              "lower": 0.4286,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "evaluated_cases": 7,
+          "mean_reciprocal_rank": 0.6071,
+          "recall_at_k": 0.7143
+        },
+        "reviewer_classification": {
+          "accuracy": 1.0,
+          "confidence_intervals": {
+            "accuracy": {
+              "confidence_level": 0.95,
+              "lower": 1.0,
+              "method": "percentile_bootstrap",
+              "samples": 1000,
+              "upper": 1.0
+            }
+          },
+          "correct": 7,
+          "evaluated_cases": 7
+        }
+      }
+    },
+    "change_detection": {
+      "confidence_intervals": {
+        "f1": {
+          "confidence_level": 0.95,
+          "lower": 1.0,
+          "method": "percentile_bootstrap",
+          "samples": 1000,
+          "upper": 1.0
+        }
+      },
+      "f1": 1.0,
+      "false_negatives": 0,
+      "false_positives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "true_positives": 20
+    },
+    "evidence": {
+      "reviewer_classification": {
+        "accuracy": 1.0,
+        "confidence_intervals": {
+          "accuracy": {
+            "confidence_level": 0.95,
+            "lower": 1.0,
+            "method": "percentile_bootstrap",
+            "samples": 1000,
+            "upper": 1.0
+          }
+        },
+        "correct": 20,
+        "evaluated_cases": 20
+      }
+    },
+    "gemini_judge": {
+      "advisory": true,
+      "completeness": 0.69,
+      "correctness": 0.69,
+      "evaluated_cases": 20,
+      "groundedness": 0.845,
+      "pass_rate": 0.55
+    },
+    "retrieval": {
+      "confidence_intervals": {
+        "mean_reciprocal_rank": {
+          "confidence_level": 0.95,
+          "lower": 0.4141,
+          "method": "percentile_bootstrap",
+          "samples": 1000,
+          "upper": 0.7917
+        },
+        "recall_at_k": {
+          "confidence_level": 0.95,
+          "lower": 0.55,
+          "method": "percentile_bootstrap",
+          "samples": 1000,
+          "upper": 0.9
+        }
+      },
+      "evaluated_cases": 20,
+      "mean_reciprocal_rank": 0.6142,
+      "recall_at_k": 0.75
+    }
+  }
+}
