@@ -142,9 +142,13 @@ données dans des volumes nommés.
   sauvegarde automatisée ni rotation de secrets.
 - L'index HTTP est en mémoire et doit être branché à PostgreSQL/pgvector pour
   survivre aux redémarrages et permettre plusieurs réplicas.
-- L'analyse actuelle est déterministe et explicable ; l'intégration d'embeddings,
-  d'un reranker et d'un LLM reste à mesurer avant activation.
+- L'analyse HTTP actuelle reste déterministe et explicable. Les adaptateurs
+  Gemini (embeddings et juge structuré) sont confinés à l'évaluation hors ligne ;
+  leur activation en production nécessiterait une comparaison contrôlée, une
+  revue sécurité et une politique de traitement des données.
 - L'interface dédiée exécute le scénario de démonstration mais n'implémente ni
   authentification ni gestion documentaire complète.
-- Les métriques actuelles viennent d'un petit benchmark synthétique versionné ;
-  elles ne démontrent pas une généralisation sur des réglementations réelles.
+- Le challenge set v2 augmente la couverture synthétique avec des splits
+  disjoints et des intervalles bootstrap. Il ne démontre toujours pas une
+  généralisation sur des réglementations réelles ; cette affirmation exige un
+  corpus public indépendant et une vérité terrain multi-annotateurs.

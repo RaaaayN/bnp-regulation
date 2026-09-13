@@ -1,4 +1,4 @@
-.PHONY: help install lint test benchmark run demo docker-build docker-up docker-down docker-logs docker-ps clean
+.PHONY: help install lint test benchmark benchmark-v2 benchmark-gemini public-corpus run demo docker-build docker-up docker-down docker-logs docker-ps clean
 
 help: ## List available targets.
 	@awk 'BEGIN {FS = ":.*## "; printf "Usage: make <target>\n\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -14,6 +14,15 @@ test: ## Run the test suite.
 
 benchmark: ## Recompute the versioned synthetic quality benchmark.
 	python scripts/run_benchmark.py --output artifacts/evaluation-report.json
+
+benchmark-v2: ## Evaluate the held-out split of the larger synthetic challenge set.
+	python scripts/run_benchmark_v2.py --split test --judge deterministic
+
+benchmark-gemini: ## Add advisory Gemini judging (requires GEMINI_API_KEY).
+	python scripts/run_benchmark_v2.py --split test --judge both
+
+public-corpus: ## Acquire the allowlisted official EU corpus with provenance.
+	python scripts/fetch_public_corpus.py
 
 run: ## Run the API locally with automatic reload.
 	python -m uvicorn app.main:app --reload --host 0.0.0.0 --port $${API_PORT:-8000}

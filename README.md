@@ -25,30 +25,90 @@ make demo
 Le bouton **Run complete analysis** exécute réellement les cinq appels API :
 ingestion, retrieval, comparaison, revue des citations et analyse d'impact.
 
-## Résultats mesurés
+## Évaluation reproductible
 
-Résultats du benchmark d'acceptation synthétique `v1.0.0`. Ils vérifient le
-comportement déterministe du MVP et ne prétendent pas mesurer une généralisation
-sur l'ensemble du corpus réglementaire européen.
+Le benchmark principal `v2.0.0` est un **challenge set synthétique**, versionné
+et déterministe. Il contient 30 documents, 60 requêtes, 120 cas de changement et
+60 claims à vérifier, répartis en `train` / `dev` / `test` sans chevauchement de
+familles. Les cas difficiles couvrent notamment les négatifs proches, les
+reformulations sans termes communs, les changements de seuil ou de délai et les
+renumérotations.
 
-| Mesure | Résultat | Échantillon |
-|---|---:|---:|
-| Recall@5 | 100 % | 6 requêtes |
-| Mean Reciprocal Rank | 100 % | 6 requêtes |
-| Détection de changement — précision / rappel / F1 | 100 / 100 / 100 % | 6 changements |
-| Classification du reviewer | 100 % | 3 cas labellisés |
-| Tests automatisés | 35 réussis | unitaires + intégration |
+Résultats du split de test, avec intervalle de confiance bootstrap à 95 % :
 
-Reproduire les chiffres :
+| Mesure | Résultat | IC 95 % | Échantillon |
+|---|---:|---:|---:|
+| Recall@5 | 75,00 % | 55,00–90,00 % | 20 requêtes |
+| Mean Reciprocal Rank | 61,42 % | 41,41–79,17 % | 20 requêtes |
+| Changements — précision / rappel / F1 | 100 / 100 / 100 % | F1 100–100 % | 40 cas |
+| Classification du reviewer | 100 % | 100–100 % | 20 claims |
 
 ```bash
-uv run python scripts/run_benchmark.py \
-  --output artifacts/evaluation-report.json
+make benchmark-v2
 ```
 
-Le rapport conserve la version et le SHA-256 du jeu de données. Les proportions
-de claims et citations supportés sont aussi publiées dans le rapport, séparément
-des métriques de performance du reviewer.
+Cette commande évalue uniquement le split `test` et produit :
+
+- `artifacts/evaluation-report-v2.json`, rapport canonique exploité par la démo ;
+- `artifacts/evaluation-report-v2.md`, résumé lisible avec résultats par difficulté ;
+- Recall@5, MRR, précision/rappel/F1, accuracy du reviewer et intervalles de
+  confiance bootstrap à graine fixe.
+
+Le rapport inclut la version, le split, le SHA-256 du dataset et le nombre de cas.
+Il faut publier ensemble le score **et** la taille du split évalué. Le petit
+benchmark `v1.0.0` (6 requêtes, 6 changements et 3 claims) reste un test
+d'acceptation historique ; ses scores à 100 % ne constituent pas une preuve de
+généralisation.
+
+> Toutes les clauses de `v2.0.0` sont fictives. Elles ne sont ni des citations,
+> ni des résumés, ni des interprétations d'EUR-Lex, de l'EBA ou de la BCE. Une
+> évaluation sur textes publics annotés par plusieurs humains reste nécessaire
+> avant toute affirmation sur une qualité en conditions réelles.
+
+### Évaluation Gemini optionnelle
+
+Gemini intervient uniquement comme juge sémantique **consultatif**. Il ne modifie
+jamais les métriques déterministes. Les réponses structurées sont validées par
+Pydantic, les appels sont retentés avec un backoff borné et mis en cache par
+empreinte SHA-256 afin de limiter coût et variabilité.
+
+Ajoutez votre secret dans `.env` (ce fichier est ignoré par Git) :
+
+```dotenv
+GEMINI_API_KEY=votre-cle
+```
+
+Puis lancez :
+
+```bash
+make benchmark-gemini
+```
+
+Mesure obtenue avec `gemini-3.6-flash` sur les 20 requêtes du split test :
+groundedness moyen **84,50 %**, correctness **69,00 %**, completeness **69,00 %**
+et pass rate consultatif **55,00 %**. Ces scores évaluent le premier passage
+retourné comme réponse candidate ; ils ne remplacent ni les labels déterministes
+ni une revue humaine.
+
+Le rapport sépare explicitement `groundedness`, `correctness`, `completeness` et
+le taux de passage Gemini des scores de référence. La configuration du modèle,
+du cache et des tentatives est documentée dans `.env.example`. Références :
+[gestion de la clé Gemini](https://ai.google.dev/gemini-api/docs/api-key) et
+[sorties structurées](https://ai.google.dev/gemini-api/docs/structured-output).
+
+### Corpus réglementaire officiel
+
+Un pipeline séparé acquiert DORA, RGPD, AI Act, MiCA et CRR depuis le dépôt
+Cellar de l'Office des publications, avec identifiants CELEX/ELI, URLs finales,
+horodatages, tailles et SHA-256 :
+
+```bash
+make public-corpus
+```
+
+Les snapshots restent locaux et ne sont pas confondus avec la vérité terrain du
+benchmark. Le protocole et la frontière d'annotation sont détaillés dans
+[docs/public-corpus.md](docs/public-corpus.md).
 
 ## Fonctionnalités
 
@@ -59,7 +119,8 @@ des métriques de performance du reviewer.
 - analyse prudente des politiques et contrôles potentiellement impactés ;
 - reviewer fail-closed vérifiant chaque extrait cité dans sa source ;
 - masquage d'identifiants et détection de prompt injection dans les documents ;
-- métriques hors ligne Recall@K, MRR, précision, rappel et F1 ;
+- benchmark split-aware, métriques hors ligne et intervalles bootstrap ;
+- juge Gemini optionnel avec sorties structurées, cache et retries ;
 - instrumentation HTTP et exposition Prometheus ;
 - persistance PostgreSQL auditable et infrastructure FalkorDB prête à étendre ;
 - image Docker non-root et stack Compose avec healthchecks.
@@ -146,9 +207,18 @@ L'index de recherche exposé par l'API est volontairement en mémoire : son cont
 est perdu au redémarrage. Le schéma PostgreSQL est initialisé dans Compose et les
 adaptateurs de persistance sont présents, mais le branchement ingestion → base et
 le client FalkorDB restent des évolutions. Les algorithmes déterministes rendent
-la démo locale reproductible ; un fournisseur LLM et des embeddings peuvent être
-ajoutés derrière les mêmes contrats après évaluation.
+la démo locale reproductible. Un adaptateur d'embeddings Gemini est disponible
+pour des expérimentations hors ligne, mais le retrieval HTTP de référence reste
+déterministe tant qu'une comparaison contrôlée ne justifie pas son activation.
 
-Les scores affichés proviennent uniquement du petit benchmark synthétique
-versionné. Ils doivent être complétés avec un corpus public annoté avant toute
-conclusion sur la qualité en production.
+Les scores affichés proviennent uniquement du rapport versionné présent dans
+`artifacts/` (v2 prioritaire, v1 en repli). Ils doivent être complétés avec un
+corpus public annoté avant toute conclusion sur la qualité en production.
+
+## Formulation portfolio recommandée
+
+Claim défendable : « Conception d'une API FastAPI de regulatory intelligence
+evidence-grounded, d'un benchmark synthétique split-aware de 240 cas et d'une
+stack Docker observée par Prometheus ; évaluation reproductible avec bootstrap
+et LLM-as-a-judge consultatif. » Évitez « 100 % de précision sur les textes
+réglementaires » tant qu'un corpus public indépendant n'a pas été annoté et testé.
