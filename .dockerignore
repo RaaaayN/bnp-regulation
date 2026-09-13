@@ -8,6 +8,8 @@ __pycache__
 .ruff_cache
 .coverage
 htmlcov
+artifacts/gemini-cache
+artifacts/public-corpus
 dist
 *.egg-info
 tests

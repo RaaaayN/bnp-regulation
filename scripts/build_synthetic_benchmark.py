@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 from app.evaluation.synthetic_dataset import (
+    SPLIT_NAMES,
     SYNTHETIC_DATASET_PATH,
     SYNTHETIC_MANIFEST_PATH,
-    SPLIT_NAMES,
     canonical_json_bytes,
     dataset_statistics,
     sha256_json,

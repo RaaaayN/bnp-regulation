@@ -8,8 +8,8 @@ from app.evaluation.synthetic_dataset import (
     DatasetValidationError,
     dataset_statistics,
     load_synthetic_dataset,
-    validate_synthetic_dataset,
     validate_sidecar_manifest,
+    validate_synthetic_dataset,
 )
 from scripts.build_synthetic_benchmark import build_dataset, main
 
