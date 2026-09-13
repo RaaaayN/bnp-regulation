@@ -144,6 +144,19 @@ function findMetric(report, key) {
   return aliases[key].find((value) => typeof value === "number");
 }
 
+function describeBenchmark(report, source) {
+  const metadata = report.benchmark || {};
+  const summary = report.summary || {};
+  const parts = ["Measured synthetic benchmark"];
+  if (metadata.version) parts.push(`v${metadata.version}`);
+  if (metadata.split) parts.push(`${metadata.split} split`);
+  const queries = summary.retrieval?.evaluated_cases;
+  const changes = report.details?.changes?.length;
+  if (Number.isInteger(queries)) parts.push(`${queries} queries`);
+  if (Number.isInteger(changes)) parts.push(`${changes} changes`);
+  return parts.length > 1 ? parts.join(" · ") : `Measured benchmark · ${source}`;
+}
+
 async function loadMetrics() {
   try {
     const response = await fetch("/demo/metrics");
@@ -152,7 +165,7 @@ async function loadMetrics() {
       $("#metrics-source").textContent = "Run the benchmark to populate measured results.";
       return;
     }
-    $("#metrics-source").textContent = `Measured benchmark · ${report.source}`;
+    $("#metrics-source").textContent = describeBenchmark(report.metrics, report.source);
     ["recall_at_k", "mrr", "precision", "f1"].forEach((key) => {
       const value = findMetric(report.metrics, key);
       if (value === undefined) return;

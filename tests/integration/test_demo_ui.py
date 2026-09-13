@@ -42,3 +42,19 @@ def test_demo_metrics_loads_generated_report(client, tmp_path, monkeypatch) -> N
         "metrics": {"summary": {"retrieval": {"recall_at_k": 0.9}}},
         "source": "portfolio-metrics.json",
     }
+
+
+def test_demo_prefers_v2_report_when_no_path_is_configured(client, tmp_path, monkeypatch) -> None:
+    import app.web.routes as routes
+
+    v2_report = tmp_path / "evaluation-report-v2.json"
+    legacy_report = tmp_path / "evaluation-report.json"
+    v2_report.write_text(json.dumps({"benchmark": {"version": "2.0.0"}}))
+    legacy_report.write_text(json.dumps({"benchmark": {"version": "1.0.0"}}))
+    monkeypatch.delenv("RIA_METRICS_REPORT", raising=False)
+    monkeypatch.setattr(routes, "_REPORT_CANDIDATES", (v2_report, legacy_report))
+
+    response = client.get("/demo/metrics")
+
+    assert response.json()["metrics"]["benchmark"]["version"] == "2.0.0"
+    assert response.json()["source"] == "evaluation-report-v2.json"

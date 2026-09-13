@@ -16,6 +16,7 @@ _APP_ROOT = Path(__file__).resolve().parents[1]
 _PROJECT_ROOT = _APP_ROOT.parent
 _TEMPLATE = _APP_ROOT / "templates" / "demo.html"
 _REPORT_CANDIDATES = (
+    _PROJECT_ROOT / "artifacts" / "evaluation-report-v2.json",
     _PROJECT_ROOT / "artifacts" / "evaluation-report.json",
     _PROJECT_ROOT / "reports" / "evaluation_report.json",
     _PROJECT_ROOT / "artifacts" / "evaluation_report.json",
