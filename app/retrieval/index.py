@@ -85,9 +85,11 @@ class InMemoryIndex:
             return len(self._chunks)
 
 
-class HybridRetriever:
-    """Rank chunks using BM25 plus Jaccard token similarity.
+class LexicalRetriever:
+    """Rank chunks using two lexical signals: BM25 and Jaccard token overlap.
 
+    Both constituent signals are lexical; no embedding or vector index is used
+    by this code path.
     Scores are normalized into [0, 1]. Results below ``evidence_threshold`` are
     excluded, so an empty list has the explicit meaning “insufficient evidence”.
     """

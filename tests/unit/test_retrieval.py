@@ -1,8 +1,8 @@
 from app.ingestion import ingest
-from app.retrieval import HybridRetriever, InMemoryIndex
+from app.retrieval import InMemoryIndex, LexicalRetriever
 
 
-def _retriever(*, threshold: float = 0.12) -> HybridRetriever:
+def _retriever(*, threshold: float = 0.12) -> LexicalRetriever:
     index = InMemoryIndex()
     index.add_many(
         [
@@ -18,10 +18,10 @@ def _retriever(*, threshold: float = 0.12) -> HybridRetriever:
             ),
         ]
     )
-    return HybridRetriever(index, evidence_threshold=threshold)
+    return LexicalRetriever(index, evidence_threshold=threshold)
 
 
-def test_hybrid_search_ranks_relevant_evidence_and_exposes_source() -> None:
+def test_lexical_search_ranks_relevant_evidence_and_exposes_source() -> None:
     result = _retriever().search("ratio minimal de fonds propres", limit=1)[0]
 
     assert result.source == "CRR"

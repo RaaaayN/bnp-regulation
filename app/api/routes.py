@@ -19,7 +19,7 @@ from app.domain import (
     SectionChange,
 )
 from app.ingestion import ingest
-from app.retrieval import HybridRetriever
+from app.retrieval import LexicalRetriever
 from app.security.content import sanitize_untrusted_content
 from app.services import ChangeAnalysisService, ClaimReviewer, ImpactAnalysisService
 
@@ -29,7 +29,7 @@ router = APIRouter(prefix="/v1")
 @router.post("/documents", response_model=IngestResponse, status_code=201, tags=["ingestion"])
 async def ingest_document(
     payload: IngestRequest,
-    retriever: Annotated[HybridRetriever, Depends(get_retriever)],
+    retriever: Annotated[LexicalRetriever, Depends(get_retriever)],
 ) -> IngestResponse:
     sanitized = sanitize_untrusted_content(payload.content)
     document = ingest(
@@ -54,7 +54,7 @@ async def ingest_document(
 @router.post("/search", response_model=SearchResponse, tags=["retrieval"])
 async def search_documents(
     payload: SearchRequest,
-    retriever: Annotated[HybridRetriever, Depends(get_retriever)],
+    retriever: Annotated[LexicalRetriever, Depends(get_retriever)],
 ) -> SearchResponse:
     settings = get_settings()
     results = retriever.search(payload.query, limit=payload.limit or settings.max_results)

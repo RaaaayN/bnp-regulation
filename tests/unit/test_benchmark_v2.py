@@ -113,7 +113,8 @@ def test_v2_filters_split_and_reports_difficulty(tmp_path: Path) -> None:
     assert report["benchmark"]["schema_version"] == "2.0"
     assert report["benchmark"]["split"] == "test"
     assert report["summary"]["retrieval"]["evaluated_cases"] == 1
-    assert report["summary"]["change_detection"]["true_positives"] == 1
+    assert report["summary"]["change_detection"]["passed"] == 1
+    assert report["summary"]["change_detection"]["performance_metric"] is None
     assert report["summary"]["evidence"]["reviewer_classification"]["accuracy"] == 1
     assert set(report["summary"]["by_difficulty"]) == {"hard"}
     assert report["summary"]["retrieval"]["confidence_intervals"]["recall_at_k"] is None
@@ -154,6 +155,10 @@ def test_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     assert json.loads(json_path.read_text()) == report
     markdown = markdown_path.read_text()
     assert "# Benchmark — Fixture v2" in markdown
+    assert "Recall@1" in markdown
+    assert "95% CI" not in markdown  # A one-case fixture cannot support an interval.
+    assert "Change detection | F1" not in markdown
+    assert "template-derived fixtures" in markdown
     assert "Gemini judge" not in markdown
     assert render_markdown_report(report) == markdown
 
@@ -186,6 +191,10 @@ def test_default_v2_dataset_runs_with_grounding_cases() -> None:
 
     assert report["summary"]["retrieval"]["evaluated_cases"] == 20
     assert len(report["details"]["changes"]) == 40
+    assert "f1" not in report["summary"]["change_detection"]
+    assert report["summary"]["change_detection"]["evaluation_type"] == (
+        "synthetic_regression_checks"
+    )
     assert report["summary"]["evidence"]["reviewer_classification"][
         "evaluated_cases"
     ] == 20

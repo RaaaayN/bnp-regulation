@@ -31,7 +31,7 @@
           <p class="card-label">ANALYSIS PIPELINE</p>
           <ol class="pipeline" aria-label="Analysis progress">
             <li data-step="ingest"><span>01</span><div><strong>Ingest source</strong><small>Parse &amp; sanitize</small></div><b>✓</b></li>
-            <li data-step="retrieve"><span>02</span><div><strong>Retrieve evidence</strong><small>Hybrid search</small></div><b>✓</b></li>
+            <li data-step="retrieve"><span>02</span><div><strong>Retrieve evidence</strong><small>Lexical BM25 + Jaccard</small></div><b>✓</b></li>
             <li data-step="compare"><span>03</span><div><strong>Detect change</strong><small>Structured diff</small></div><b>✓</b></li>
             <li data-step="review"><span>04</span><div><strong>Verify claims</strong><small>Citation guardrail</small></div><b>✓</b></li>
             <li data-step="impact"><span>05</span><div><strong>Map impact</strong><small>Controls &amp; policies</small></div><b>✓</b></li>
@@ -73,18 +73,18 @@
       <div class="architecture-flow" aria-label="System architecture">
         <div class="arch-node"><span>01</span><b>Sources</b><small>HTML · Text</small></div><i>→</i><div class="arch-node"><span>02</span><b>Ingestion</b><small>Parsing · PII redaction</small></div><i>→</i><div class="arch-node active"><span>03</span><b>Retrieval</b><small>BM25 · Evidence gate</small></div><i>→</i><div class="arch-node"><span>04</span><b>Analysis</b><small>Diff · Claims · Impact</small></div><i>→</i><div class="arch-node"><span>05</span><b>Delivery</b><small>REST API · Evidence</small></div>
       </div>
-      <div class="tech-stack"><span>Python 3.12</span><span>FastAPI</span><span>Pydantic v2</span><span>PostgreSQL 16</span><span>pgvector</span><span>FalkorDB</span><span>SQLAlchemy</span><span>Gemini API</span><span>Prometheus</span><span>Docker</span><span>GitHub Actions</span><span>Pytest</span><span>Ruff</span></div>
+      <div class="tech-stack"><span>Python 3.12</span><span>FastAPI</span><span>Pydantic v2</span><span>In-memory BM25</span><span>Jaccard tokens</span><span>Prometheus</span><span>Docker</span><span>GitHub Actions</span><span>Pytest</span><span>Ruff</span></div>
     </section>
 
     <section id="metrics" class="metrics section-wrap">
       <div class="section-heading"><div><span class="kicker">MEASURED QUALITY</span><h2>Evaluation results</h2></div><p id="metrics-source">Looking for an evaluation report…</p></div>
       <div class="metric-grid">
-        <article><span>Recall@K</span><strong data-metric="recall_at_k">—</strong><div class="bar"><i data-bar="recall_at_k"></i></div><small>Evidence retrieval coverage</small></article>
+        <article><span>Recall@5</span><strong data-metric="recall_at_k">—</strong><div class="bar"><i data-bar="recall_at_k"></i></div><small data-detail="recall_at_k">Estimate with 95% CI</small></article>
         <article><span>MRR</span><strong data-metric="mrr">—</strong><div class="bar"><i data-bar="mrr"></i></div><small>First relevant result rank</small></article>
-        <article><span>Precision</span><strong data-metric="precision">—</strong><div class="bar"><i data-bar="precision"></i></div><small>Material-change classification</small></article>
-        <article><span>F1 score</span><strong data-metric="f1">—</strong><div class="bar"><i data-bar="f1"></i></div><small>Precision / recall balance</small></article>
+        <article><span>Retrieval sample</span><strong data-metric="queries">—</strong><div class="bar"><i data-bar="queries"></i></div><small>Synthetic test queries</small></article>
+        <article><span>Change checks</span><strong data-metric="change_checks">—</strong><div class="bar"><i data-bar="change_checks"></i></div><small>Regression fixtures passed; not F1</small></article>
       </div>
-      <p class="metric-disclaimer">Synthetic challenge set. Metrics are read from the generated report, never hard-coded. They are not production-quality claims.</p>
+      <p class="metric-disclaimer">Synthetic challenge set. Recall is shown with its 95% interval and sample size. Change fixtures exercise hand-written rules and are not an independent performance evaluation.</p>
     </section>
   </main>
   <footer><span>Regulatory Intelligence Assistant</span><span><a href="/docs">OpenAPI</a> · <a href="/health">Health</a> · <a href="/metrics">Metrics</a></span></footer>

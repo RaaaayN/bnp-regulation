@@ -11,12 +11,11 @@ from typing import Any
 
 from app.domain import Citation, Claim, RegulatorySection, ReviewStatus
 from app.ingestion import ingest
-from app.retrieval import HybridRetriever, InMemoryIndex
+from app.retrieval import InMemoryIndex, LexicalRetriever
 from app.services import ChangeAnalysisService, ClaimReviewer
 
 from .metrics import (
     RetrievalCase,
-    evaluate_change_detection,
     evaluate_grounding,
     evaluate_retrieval,
     evaluate_reviewer_classification,
@@ -57,7 +56,7 @@ def run_benchmark(dataset_path: Path = DEFAULT_DATASET) -> dict[str, Any]:
                 published_at=item.get("published_at"),
             )
         )
-    retriever = HybridRetriever(index, evidence_threshold=0.0)
+    retriever = LexicalRetriever(index, evidence_threshold=0.0)
     retrieval_cases: list[RetrievalCase] = []
     retrieval_details: list[dict[str, Any]] = []
     k = int(data["retrieval"].get("k", 5))
@@ -132,7 +131,10 @@ def run_benchmark(dataset_path: Path = DEFAULT_DATASET) -> dict[str, Any]:
     )
 
     retrieval_metrics = evaluate_retrieval(retrieval_cases, k=k)
-    change_metrics = evaluate_change_detection(expected_material, predicted_material)
+    change_checks_passed = sum(
+        expected == predicted
+        for expected, predicted in zip(expected_material, predicted_material, strict=True)
+    )
     grounding_metrics = evaluate_grounding(list(reviews))
     return {
         "benchmark": {
@@ -140,10 +142,22 @@ def run_benchmark(dataset_path: Path = DEFAULT_DATASET) -> dict[str, Any]:
             "version": data["version"],
             "sha256": hashlib.sha256(dataset_bytes).hexdigest(),
             "deterministic": True,
+            "scope": {
+                "change_detection": (
+                    "template-derived regression fixtures; not an independent performance "
+                    "evaluation"
+                )
+            },
         },
         "summary": {
             "retrieval": asdict(retrieval_metrics),
-            "change_detection": asdict(change_metrics),
+            "change_detection": {
+                "evaluation_type": "synthetic_regression_checks",
+                "passed": change_checks_passed,
+                "failed": len(change_details) - change_checks_passed,
+                "evaluated_cases": len(change_details),
+                "performance_metric": None,
+            },
             "evidence": {
                 "reviewer_classification": asdict(reviewer_metrics),
                 "claim_set_composition": asdict(grounding_metrics),

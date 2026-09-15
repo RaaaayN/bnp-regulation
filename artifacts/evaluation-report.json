@@ -2,6 +2,9 @@
   "benchmark": {
     "dataset": "EU banking regulatory intelligence golden set",
     "deterministic": true,
+    "scope": {
+      "change_detection": "template-derived regression fixtures; not an independent performance evaluation"
+    },
     "sha256": "df6ff5f5a3202e07501f0cdec0126cdd68d71f5b91a064a1acf4945aa00e9924",
     "version": "1.0.0"
   },
@@ -224,12 +227,11 @@
   },
   "summary": {
     "change_detection": {
-      "f1": 1.0,
-      "false_negatives": 0,
-      "false_positives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "true_positives": 4
+      "evaluated_cases": 6,
+      "evaluation_type": "synthetic_regression_checks",
+      "failed": 0,
+      "passed": 6,
+      "performance_metric": null
     },
     "evidence": {
       "claim_set_composition": {

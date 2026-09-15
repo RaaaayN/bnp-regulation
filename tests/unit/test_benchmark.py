@@ -21,7 +21,8 @@ def test_benchmark_calculates_metrics_from_golden_dataset() -> None:
     assert report["summary"]["retrieval"]["evaluated_cases"] == 6
     assert 0.0 <= report["summary"]["retrieval"]["recall_at_k"] <= 1.0
     assert 0.0 <= report["summary"]["retrieval"]["mean_reciprocal_rank"] <= 1.0
-    assert report["summary"]["change_detection"]["true_positives"] > 0
+    assert report["summary"]["change_detection"]["passed"] == 6
+    assert report["summary"]["change_detection"]["performance_metric"] is None
     evidence = report["summary"]["evidence"]
     assert evidence["reviewer_classification"]["accuracy"] == 1.0
     assert evidence["reviewer_classification"]["evaluated_cases"] == 3

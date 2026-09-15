@@ -1,7 +1,7 @@
 from fastapi import Request
 
-from app.retrieval import HybridRetriever
+from app.retrieval import LexicalRetriever
 
 
-def get_retriever(request: Request) -> HybridRetriever:
+def get_retriever(request: Request) -> LexicalRetriever:
     return request.app.state.retriever

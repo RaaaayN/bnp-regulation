@@ -138,16 +138,18 @@ function findMetric(report, key) {
   const aliases = {
     recall_at_k: [summary.retrieval?.recall_at_k, summary.recall_at_k, summary["recall@k"]],
     mrr: [summary.retrieval?.mean_reciprocal_rank, summary.retrieval?.mrr, summary.mrr],
-    precision: [summary.change_detection?.precision, summary.precision],
-    f1: [summary.change_detection?.f1, summary.f1, summary.f1_score],
   };
   return aliases[key].find((value) => typeof value === "number");
+}
+
+function confidenceInterval(report, metric) {
+  return report.summary?.retrieval?.confidence_intervals?.[metric];
 }
 
 function describeBenchmark(report, source) {
   const metadata = report.benchmark || {};
   const summary = report.summary || {};
-  const parts = ["Measured synthetic benchmark"];
+  const parts = ["Synthetic evaluation report"];
   if (metadata.version) parts.push(`v${metadata.version}`);
   if (metadata.split) parts.push(`${metadata.split} split`);
   const queries = summary.retrieval?.evaluated_cases;
@@ -166,12 +168,32 @@ async function loadMetrics() {
       return;
     }
     $("#metrics-source").textContent = describeBenchmark(report.metrics, report.source);
-    ["recall_at_k", "mrr", "precision", "f1"].forEach((key) => {
+    ["recall_at_k", "mrr"].forEach((key) => {
       const value = findMetric(report.metrics, key);
       if (value === undefined) return;
       document.querySelector(`[data-metric="${key}"]`).textContent = pct(value);
       document.querySelector(`[data-bar="${key}"]`).style.width = pct(value);
     });
+    const recallInterval = confidenceInterval(report.metrics, "recall_at_k");
+    const queryCount = report.metrics.summary?.retrieval?.evaluated_cases;
+    if (recallInterval) {
+      document.querySelector('[data-detail="recall_at_k"]').textContent =
+        `95% CI ${pct(recallInterval.lower)}–${pct(recallInterval.upper)} · n=${queryCount}`;
+    }
+    if (Number.isInteger(queryCount)) {
+      document.querySelector('[data-metric="queries"]').textContent = `n=${queryCount}`;
+      document.querySelector('[data-bar="queries"]').style.width = "100%";
+    }
+    const changes = report.metrics.details?.changes || [];
+    const passedChanges = changes.filter(
+      (row) => row.expected_material === row.predicted_material,
+    ).length;
+    if (changes.length) {
+      document.querySelector('[data-metric="change_checks"]').textContent =
+        `${passedChanges}/${changes.length}`;
+      document.querySelector('[data-bar="change_checks"]').style.width =
+        pct(passedChanges / changes.length);
+    }
   } catch (_) {
     $("#metrics-source").textContent = "Benchmark report unavailable.";
   }

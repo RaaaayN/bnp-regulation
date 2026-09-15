@@ -4,18 +4,22 @@ Dataset version: `2.0.0` · Split: `test` · SHA-256: `af6477a4b102489b364e575ad
 
 ## Results
 
-| Evaluation | Metric | Score | Cases |
+| Evaluation | Metric | Estimate with uncertainty | Cases |
 |---|---:|---:|---:|
-| Retrieval | Recall@K | 75.0% | 20 |
-| Retrieval | MRR | 61.4% | 20 |
-| Change detection | F1 | 100.0% | 40 |
-| Evidence reviewer | Accuracy | 100.0% | 20 |
-| Gemini judge (advisory) | Pass rate | 55.0% | 20 |
+| Lexical retrieval | Recall@5 | 75.0% (95% CI 55.0%–90.0%) | 20 |
+| Lexical retrieval | MRR | 61.4% (95% CI 41.4%–79.2%) | 20 |
 
-## By difficulty
+## Synthetic regression checks
 
-- **Easy** — Recall@K 83.3%, change F1 100.0%, reviewer accuracy 100.0%.
-- **Medium** — Recall@K 71.4%, change F1 100.0%, reviewer accuracy 100.0%.
-- **Hard** — Recall@K 71.4%, change F1 100.0%, reviewer accuracy 100.0%.
+- Change rules matched 40/40 template-derived fixtures.
+- Evidence reviewer matched 20/20 synthetic fixtures.
 
-> Bootstrap confidence intervals use a fixed seed. Gemini scores are advisory and are kept separate from deterministic baseline metrics.
+These fixture pass counts verify expected code paths; they are not independent estimates of change-detection F1 or reviewer accuracy on regulatory texts.
+
+## Retrieval by generator stratum
+
+- **Easy** — Recall@5 83.3%, 95% CI 50.0%–100.0% (n=6).
+- **Medium** — Recall@5 71.4%, 95% CI 42.9%–100.0% (n=7).
+- **Hard** — Recall@5 71.4%, 95% CI 42.9%–100.0% (n=7).
+
+> “Easy”, “medium” and “hard” are generator strata, not demonstrated levels of real-world difficulty. Bootstrap intervals use a fixed seed. The dataset is synthetic and no result establishes performance on EUR-Lex. Gemini scores are advisory and kept separate from deterministic baseline metrics.

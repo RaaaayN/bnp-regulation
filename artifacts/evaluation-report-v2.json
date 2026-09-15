@@ -6,8 +6,13 @@
       "seed": 20260915
     },
     "dataset": "Regulatory intelligence synthetic challenge benchmark",
-    "judge_mode": "both",
+    "judge_mode": "deterministic",
     "schema_version": "2.0",
+    "scope": {
+      "change_detection": "template-derived regression fixtures; not an independent performance evaluation",
+      "evidence_reviewer": "synthetic regression fixtures",
+      "retrieval": "synthetic challenge set; not validated on an external corpus"
+    },
     "sha256": "af6477a4b102489b364e575ad960d46ac31ccefcf0ff6de66365ef3d2db8714b",
     "split": "test",
     "version": "2.0.0"
@@ -837,218 +842,7 @@
         "unsupported_citations": 1
       }
     ],
-    "gemini_judge": [
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "medium",
-        "groundedness": 1.0,
-        "id": "ret-041",
-        "passed": true,
-        "rationale": "The answer directly and accurately states the retention period of 9 years for business continuity control evidence as supported by the evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.5,
-        "correctness": 0.5,
-        "difficulty": "hard",
-        "groundedness": 1.0,
-        "id": "ret-042",
-        "passed": false,
-        "rationale": "The evidence does not mention synthetic scenario TEST-01 or an operating blueprint. Selecting the privacy response operating plan cadence assumes information not provided in the question or evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "easy",
-        "groundedness": 1.0,
-        "id": "ret-043",
-        "passed": true,
-        "rationale": "The answer accurately and completely answers the question using only the provided evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.2,
-        "correctness": 0.2,
-        "difficulty": "medium",
-        "groundedness": 0.5,
-        "id": "ret-044",
-        "passed": false,
-        "rationale": "The evidence does not contain any reference to synthetic scenario TEST-02 or specify which operating plan corresponds to the operating blueprint for TEST-02. Asserting that the privacy response operating plan applies to TEST-02 is unsupported.",
-        "unsupported_claims": [
-          "The oversight committee must approve the privacy response operating plan every 6 months (as the answer for synthetic scenario TEST-02)."
-        ]
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "hard",
-        "groundedness": 1.0,
-        "id": "ret-045",
-        "passed": true,
-        "rationale": "The answer accurately and completely answers the question using the provided evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.5,
-        "correctness": 0.5,
-        "difficulty": "easy",
-        "groundedness": 1.0,
-        "id": "ret-046",
-        "passed": false,
-        "rationale": "The provided answer quotes a statement directly from the evidence, but the evidence does not mention 'synthetic scenario TEST-03'. Therefore, it cannot be verified whether the privacy response operating plan corresponds to TEST-03.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "medium",
-        "groundedness": 1.0,
-        "id": "ret-047",
-        "passed": true,
-        "rationale": "The answer accurately and completely answers the question using the exact information provided in the evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.5,
-        "correctness": 0.5,
-        "difficulty": "hard",
-        "groundedness": 0.5,
-        "id": "ret-048",
-        "passed": false,
-        "rationale": "The provided evidence does not mention 'synthetic scenario TEST-04' or 'operating blueprint', so asserting that the privacy response operating plan is the answer for TEST-04 is unsupported by the context.",
-        "unsupported_claims": [
-          "The oversight committee must approve the privacy response operating plan every 6 months. [in response to scenario TEST-04]"
-        ]
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "easy",
-        "groundedness": 1.0,
-        "id": "ret-049",
-        "passed": true,
-        "rationale": "The response accurately answers the question based on the provided evidence, correctly stating that operational resilience control evidence must be retained for 6 years after closure.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.4,
-        "correctness": 0.2,
-        "difficulty": "medium",
-        "groundedness": 1.0,
-        "id": "ret-050",
-        "passed": false,
-        "rationale": "The text in the answer is directly supported by the evidence, but the provided evidence does not mention 'synthetic scenario TEST-05' or 'operating blueprint', making it impossible to correctly identify which operating plan corresponds to the question.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "hard",
-        "groundedness": 1.0,
-        "id": "ret-051",
-        "passed": true,
-        "rationale": "The answer directly and accurately answers the question based on the provided evidence, stating that privacy response control evidence must be retained for 7 years after closure.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "easy",
-        "groundedness": 1.0,
-        "id": "ret-052",
-        "passed": true,
-        "rationale": "The answer directly quotes a fact supported by the provided evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "medium",
-        "groundedness": 1.0,
-        "id": "ret-053",
-        "passed": true,
-        "rationale": "The answer directly and accurately answers the question based on the provided evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.0,
-        "correctness": 0.2,
-        "difficulty": "hard",
-        "groundedness": 0.5,
-        "id": "ret-054",
-        "passed": false,
-        "rationale": "The evidence does not contain any reference to synthetic scenario TEST-07, making the connection between TEST-07 and the privacy response operating plan unsupported.",
-        "unsupported_claims": [
-          "The oversight committee must approve the privacy response operating plan every 6 months."
-        ]
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "easy",
-        "groundedness": 1.0,
-        "id": "ret-055",
-        "passed": true,
-        "rationale": "The answer directly and accurately states the retention period for treasury controls control evidence as 9 years after closure, matching the evidence provided.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.3,
-        "correctness": 0.3,
-        "difficulty": "medium",
-        "groundedness": 0.4,
-        "id": "ret-056",
-        "passed": false,
-        "rationale": "The evidence does not mention 'synthetic scenario TEST-08' or an 'operating blueprint'. The answer assumes the question refers specifically to the 'privacy response operating plan', which is not supported by the provided text.",
-        "unsupported_claims": [
-          "The oversight committee must approve the privacy response operating plan every 6 months."
-        ]
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "hard",
-        "groundedness": 1.0,
-        "id": "ret-057",
-        "passed": true,
-        "rationale": "The answer directly and accurately addresses the question using the exact facts provided in the evidence.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.0,
-        "correctness": 0.0,
-        "difficulty": "easy",
-        "groundedness": 0.0,
-        "id": "ret-058",
-        "passed": false,
-        "rationale": "The evidence does not mention synthetic scenario TEST-09 or an operating blueprint, nor does it specify that the privacy response operating plan is the relevant plan for this scenario.",
-        "unsupported_claims": [
-          "The oversight committee must approve the privacy response operating plan every 6 months."
-        ]
-      },
-      {
-        "completeness": 1.0,
-        "correctness": 1.0,
-        "difficulty": "medium",
-        "groundedness": 1.0,
-        "id": "ret-059",
-        "passed": true,
-        "rationale": "The answer directly and accurately addresses the question using the provided evidence, with no unsupported claims.",
-        "unsupported_claims": []
-      },
-      {
-        "completeness": 0.4,
-        "correctness": 0.4,
-        "difficulty": "hard",
-        "groundedness": 1.0,
-        "id": "ret-060",
-        "passed": false,
-        "rationale": "The statement provided in the answer exists in the evidence, but the evidence contains no mention of 'synthetic scenario TEST-10' or an 'operating blueprint'. Selecting the privacy response operating plan over the other operating plans listed in the evidence is unsupported by the context provided.",
-        "unsupported_claims": []
-      }
-    ],
+    "gemini_judge": [],
     "retrieval": [
       {
         "challenge_tags": [
@@ -1516,21 +1310,11 @@
     "by_difficulty": {
       "easy": {
         "change_detection": {
-          "confidence_intervals": {
-            "f1": {
-              "confidence_level": 0.95,
-              "lower": 1.0,
-              "method": "percentile_bootstrap",
-              "samples": 1000,
-              "upper": 1.0
-            }
-          },
-          "f1": 1.0,
-          "false_negatives": 0,
-          "false_positives": 0,
-          "precision": 1.0,
-          "recall": 1.0,
-          "true_positives": 7
+          "evaluated_cases": 13,
+          "evaluation_type": "synthetic_regression_checks",
+          "failed": 0,
+          "passed": 13,
+          "performance_metric": null
         },
         "retrieval": {
           "confidence_intervals": {
@@ -1550,6 +1334,7 @@
             }
           },
           "evaluated_cases": 6,
+          "k": 5,
           "mean_reciprocal_rank": 0.7222,
           "recall_at_k": 0.8333
         },
@@ -1570,21 +1355,11 @@
       },
       "hard": {
         "change_detection": {
-          "confidence_intervals": {
-            "f1": {
-              "confidence_level": 0.95,
-              "lower": 1.0,
-              "method": "percentile_bootstrap",
-              "samples": 1000,
-              "upper": 1.0
-            }
-          },
-          "f1": 1.0,
-          "false_negatives": 0,
-          "false_positives": 0,
-          "precision": 1.0,
-          "recall": 1.0,
-          "true_positives": 7
+          "evaluated_cases": 14,
+          "evaluation_type": "synthetic_regression_checks",
+          "failed": 0,
+          "passed": 14,
+          "performance_metric": null
         },
         "retrieval": {
           "confidence_intervals": {
@@ -1604,6 +1379,7 @@
             }
           },
           "evaluated_cases": 7,
+          "k": 5,
           "mean_reciprocal_rank": 0.5286,
           "recall_at_k": 0.7143
         },
@@ -1624,21 +1400,11 @@
       },
       "medium": {
         "change_detection": {
-          "confidence_intervals": {
-            "f1": {
-              "confidence_level": 0.95,
-              "lower": 1.0,
-              "method": "percentile_bootstrap",
-              "samples": 1000,
-              "upper": 1.0
-            }
-          },
-          "f1": 1.0,
-          "false_negatives": 0,
-          "false_positives": 0,
-          "precision": 1.0,
-          "recall": 1.0,
-          "true_positives": 6
+          "evaluated_cases": 13,
+          "evaluation_type": "synthetic_regression_checks",
+          "failed": 0,
+          "passed": 13,
+          "performance_metric": null
         },
         "retrieval": {
           "confidence_intervals": {
@@ -1658,6 +1424,7 @@
             }
           },
           "evaluated_cases": 7,
+          "k": 5,
           "mean_reciprocal_rank": 0.6071,
           "recall_at_k": 0.7143
         },
@@ -1678,21 +1445,11 @@
       }
     },
     "change_detection": {
-      "confidence_intervals": {
-        "f1": {
-          "confidence_level": 0.95,
-          "lower": 1.0,
-          "method": "percentile_bootstrap",
-          "samples": 1000,
-          "upper": 1.0
-        }
-      },
-      "f1": 1.0,
-      "false_negatives": 0,
-      "false_positives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "true_positives": 20
+      "evaluated_cases": 40,
+      "evaluation_type": "synthetic_regression_checks",
+      "failed": 0,
+      "passed": 40,
+      "performance_metric": null
     },
     "evidence": {
       "reviewer_classification": {
@@ -1709,14 +1466,6 @@
         "correct": 20,
         "evaluated_cases": 20
       }
-    },
-    "gemini_judge": {
-      "advisory": true,
-      "completeness": 0.69,
-      "correctness": 0.69,
-      "evaluated_cases": 20,
-      "groundedness": 0.845,
-      "pass_rate": 0.55
     },
     "retrieval": {
       "confidence_intervals": {
@@ -1736,6 +1485,7 @@
         }
       },
       "evaluated_cases": 20,
+      "k": 5,
       "mean_reciprocal_rank": 0.6142,
       "recall_at_k": 0.75
     }

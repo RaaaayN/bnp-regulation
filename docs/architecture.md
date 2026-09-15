@@ -13,8 +13,8 @@ Les principes structurants sont les suivants :
 - le contenu documentaire est traité comme une donnée non fiable, jamais comme
   une instruction adressée au modèle ;
 - les impacts sont qualifiés de potentiels jusqu'à validation humaine ;
-- PostgreSQL/pgvector et FalkorDB sont provisionnés comme trajectoire de
-  persistance ; le chemin HTTP courant reste déterministe et en mémoire ;
+- PostgreSQL avec l'extension pgvector et FalkorDB sont seulement provisionnés
+  par Compose ; le chemin HTTP ne lit ni n'écrit ces services ;
 - les composants spécialisés restent orchestrés et vérifiés plutôt que de former
   une chaîne d'agents autonomes sans contrôle.
 
@@ -23,8 +23,8 @@ Les principes structurants sont les suivants :
 ```mermaid
 flowchart LR
     Analyste[Analyste conformité] -->|HTTP / JSON| API[FastAPI]
-    API -.->|adaptateur SQL prêt| PG[(PostgreSQL + pgvector)]
-    API -.->|intégration future| Graph[(FalkorDB)]
+    API -.->|schéma/repositories non branchés| PG[(PostgreSQL + pgvector)]
+    API -.->|aucun client implémenté| Graph[(FalkorDB)]
     Prom[Prometheus] -->|scrape /metrics| API
     Sources[EBA / ECB / EUR-Lex] -.->|connecteurs futurs| API
     API -.->|extension évaluée avant activation| LLM[Fournisseur LLM]
@@ -62,8 +62,8 @@ flowchart TB
 | Change analysis | Alignement, classification, matérialité déterministe | Implémenté |
 | Impact analysis | Rapprochement prudent par concepts configurés | Implémenté |
 | Reviewer | Vérification exacte claim → source, politique fail-closed | Implémenté |
-| PostgreSQL/pgvector | Documents, sections, métadonnées, audit | Schéma et adaptateur prêts |
-| FalkorDB | Relations réglementaires et internes | Infrastructure prête |
+| PostgreSQL/pgvector | Persistance envisagée | Schéma/repositories présents, hors chemin HTTP |
+| FalkorDB | Graphe envisagé | Conteneur seulement, aucun client applicatif |
 
 ## Flux principal
 
@@ -90,13 +90,12 @@ un embedding ou une réponse générée ne remplace jamais la source.
 
 ## Décisions d'architecture
 
-### Deux stockages spécialisés
+### Deux stockages envisagés, non intégrés
 
-Le texte, ses métadonnées et ses vecteurs ont un modèle relationnel naturel et
-bénéficient des transactions de PostgreSQL. Les dépendances entre exigences,
-politiques, contrôles, processus et équipes se parcourent plus naturellement dans
-un graphe. Le coût opérationnel de deux bases est accepté afin d'éviter de forcer
-un seul modèle de données à servir deux usages différents.
+PostgreSQL/pgvector et FalkorDB représentent une trajectoire d'architecture, pas
+une capacité actuelle. Leur intérêt devra être confirmé par une intégration et
+une évaluation avant de pouvoir être revendiqué : le service de recherche actuel
+combine uniquement BM25 et Jaccard en mémoire.
 
 ### Orchestration explicite
 
@@ -140,8 +139,8 @@ données dans des volumes nommés.
   doit être fixé avant une mise en production.
 - Compose fournit un environnement mono-hôte sans TLS, haute disponibilité,
   sauvegarde automatisée ni rotation de secrets.
-- L'index HTTP est en mémoire et doit être branché à PostgreSQL/pgvector pour
-  survivre aux redémarrages et permettre plusieurs réplicas.
+- L'index HTTP est en mémoire. L'extension pgvector est installée dans le
+  conteneur PostgreSQL, mais aucun embedding n'y est stocké ou recherché.
 - L'analyse HTTP actuelle reste déterministe et explicable. Les adaptateurs
   Gemini (embeddings et juge structuré) sont confinés à l'évaluation hors ligne ;
   leur activation en production nécessiterait une comparaison contrôlée, une

@@ -25,20 +25,13 @@ make demo
 Le bouton **Run complete analysis** exécute réellement les cinq appels API :
 ingestion, retrieval, comparaison, revue des citations et analyse d'impact.
 
-### Captures
-
-![Vue d'ensemble du workbench réglementaire](docs/assets/demo-overview.png)
-
-![Analyse terminée avec preuve vérifiée, impacts et métriques](docs/assets/demo-analysis.png)
-
 ## Évaluation reproductible
 
 Le benchmark principal `v2.0.0` est un **challenge set synthétique**, versionné
 et déterministe. Il contient 30 documents, 60 requêtes, 120 cas de changement et
 60 claims à vérifier, répartis en `train` / `dev` / `test` sans chevauchement de
-familles. Les cas difficiles couvrent notamment les négatifs proches, les
-reformulations sans termes communs, les changements de seuil ou de délai et les
-renumérotations.
+familles générées. Ces splits évitent la répétition littérale d'un thème, mais
+pas la répétition des gabarits de génération.
 
 Résultats du split de test, avec intervalle de confiance bootstrap à 95 % :
 
@@ -46,8 +39,16 @@ Résultats du split de test, avec intervalle de confiance bootstrap à 95 % :
 |---|---:|---:|---:|
 | Recall@5 | 75,00 % | 55,00–90,00 % | 20 requêtes |
 | Mean Reciprocal Rank | 61,42 % | 41,41–79,17 % | 20 requêtes |
-| Changements — précision / rappel / F1 | 100 / 100 / 100 % | F1 100–100 % | 40 cas |
-| Classification du reviewer | 100 % | 100–100 % | 20 claims |
+
+Le Recall@5 n'est publiable qu'avec son incertitude et son échantillon : sur
+20 requêtes synthétiques, l'intervalle `[55 %–90 %]` est trop large pour en
+tirer une estimation stable, et ne dit rien sur un corpus EUR-Lex réel.
+
+Les 40 comparaisons de changement et les 20 cas du reviewer passent tous les
+attendus. Ils sont désormais rapportés comme **tests de non-régression**, pas
+comme F1 ou accuracy : les exemples sont dérivés des mêmes gabarits lexicaux que
+les règles testées (`should` → `must`, nombre ou délai modifié, ajout/suppression)
+et ne forment pas une évaluation indépendante.
 
 ```bash
 make benchmark-v2
@@ -57,14 +58,15 @@ Cette commande évalue uniquement le split `test` et produit :
 
 - `artifacts/evaluation-report-v2.json`, rapport canonique exploité par la démo ;
 - `artifacts/evaluation-report-v2.md`, résumé lisible avec résultats par difficulté ;
-- Recall@5, MRR, précision/rappel/F1, accuracy du reviewer et intervalles de
-  confiance bootstrap à graine fixe.
+- Recall@5 et MRR avec intervalles de confiance bootstrap à graine fixe ;
+- nombre de fixtures de non-régression satisfaites pour le détecteur et le
+  reviewer, sans les présenter comme des métriques de généralisation.
 
 Le rapport inclut la version, le split, le SHA-256 du dataset et le nombre de cas.
 Il faut publier ensemble le score **et** la taille du split évalué. Le petit
 benchmark `v1.0.0` (6 requêtes, 6 changements et 3 claims) reste un test
-d'acceptation historique ; ses scores à 100 % ne constituent pas une preuve de
-généralisation.
+d'acceptation historique ; ses fixtures satisfaites ne constituent pas une
+preuve de généralisation.
 
 > Toutes les clauses de `v2.0.0` sont fictives. Elles ne sont ni des citations,
 > ni des résumés, ni des interprétations d'EUR-Lex, de l'EBA ou de la BCE. Une
@@ -90,14 +92,10 @@ Puis lancez :
 make benchmark-gemini
 ```
 
-Mesure obtenue avec `gemini-3.6-flash` sur les 20 requêtes du split test :
-groundedness moyen **84,50 %**, correctness **69,00 %**, completeness **69,00 %**
-et pass rate consultatif **55,00 %**. Ces scores évaluent le premier passage
-retourné comme réponse candidate ; ils ne remplacent ni les labels déterministes
-ni une revue humaine.
-
 Le rapport sépare explicitement `groundedness`, `correctness`, `completeness` et
-le taux de passage Gemini des scores de référence. La configuration du modèle,
+le taux de passage Gemini des résultats déterministes. Aucun score Gemini n'est
+publié dans le rapport canonique par défaut : il dépend d'un service externe et
+doit être régénéré avec sa configuration de modèle. La configuration du modèle,
 du cache et des tentatives est documentée dans `.env.example`. Références :
 [gestion de la clé Gemini](https://ai.google.dev/gemini-api/docs/api-key) et
 [sorties structurées](https://ai.google.dev/gemini-api/docs/structured-output).
@@ -119,7 +117,7 @@ benchmark. Le protocole et la frontière d'annotation sont détaillés dans
 ## Fonctionnalités
 
 - parsing texte/HTML et découpage par titres, articles et paragraphes ;
-- recherche hybride déterministe (BM25 + similarité de tokens) avec seuil de preuve ;
+- recherche lexicale déterministe (BM25 + Jaccard sur tokens) avec seuil de preuve ;
 - comparaison `added` / `removed` / `modified` / `unchanged` ;
 - détection de changements matériels, notamment `should` → `must` ;
 - analyse prudente des politiques et contrôles potentiellement impactés ;
@@ -128,7 +126,9 @@ benchmark. Le protocole et la frontière d'annotation sont détaillés dans
 - benchmark split-aware, métriques hors ligne et intervalles bootstrap ;
 - juge Gemini optionnel avec sorties structurées, cache et retries ;
 - instrumentation HTTP et exposition Prometheus ;
-- persistance PostgreSQL auditable et infrastructure FalkorDB prête à étendre ;
+- prototype de schéma/repositories PostgreSQL non branché au chemin HTTP ;
+- services pgvector et FalkorDB provisionnés par Compose, sans recherche
+  vectorielle ni client graphe dans le chemin applicatif ;
 - image Docker non-root et stack Compose avec healthchecks.
 
 ## Démarrage avec Docker
@@ -192,14 +192,14 @@ OpenAPI :
 flowchart LR
     Sources[EBA / ECB / EUR-Lex] --> Guard[Sanitisation]
     Guard --> Ingestion[Ingestion structurée]
-    Ingestion --> Retrieval[Recherche hybride]
+    Ingestion --> Retrieval[Recherche lexicale BM25 + Jaccard]
     Retrieval --> Analysis[Change + Impact analysis]
     Analysis --> Reviewer[Reviewer fail-closed]
     Reviewer --> API[FastAPI]
     API --> Analyst[Analyste conformité]
     API --> Metrics[Prometheus metrics]
-    Ingestion -. persistance prévue .-> PG[(PostgreSQL / pgvector)]
-    Analysis -. graphe prévu .-> KG[(FalkorDB)]
+    Ingestion -. non branché .-> PG[(PostgreSQL / pgvector)]
+    Analysis -. aucun client .-> KG[(FalkorDB)]
 ```
 
 Les choix, flux de données, frontières de confiance et limites sont détaillés
@@ -209,13 +209,13 @@ consignes de passage en production sont dans
 
 ## État et limites du MVP
 
-L'index de recherche exposé par l'API est volontairement en mémoire : son contenu
-est perdu au redémarrage. Le schéma PostgreSQL est initialisé dans Compose et les
-adaptateurs de persistance sont présents, mais le branchement ingestion → base et
-le client FalkorDB restent des évolutions. Les algorithmes déterministes rendent
-la démo locale reproductible. Un adaptateur d'embeddings Gemini est disponible
-pour des expérimentations hors ligne, mais le retrieval HTTP de référence reste
-déterministe tant qu'une comparaison contrôlée ne justifie pas son activation.
+L'index lexical exposé par l'API est en mémoire : son contenu est perdu au
+redémarrage. Le schéma PostgreSQL et des repositories existent, mais l'ingestion
+et la recherche HTTP ne les utilisent pas. `pgvector` est seulement présent dans
+l'image PostgreSQL ; aucun vecteur n'est écrit ni interrogé. FalkorDB est lancé
+par Compose, mais aucun client graphe n'est implémenté. Un adaptateur d'embeddings
+Gemini existe pour des expérimentations hors ligne et n'est pas appelé par la
+recherche HTTP.
 
 Les scores affichés proviennent uniquement du rapport versionné présent dans
 `artifacts/` (v2 prioritaire, v1 en repli). Ils doivent être complétés avec un
@@ -224,7 +224,7 @@ corpus public annoté avant toute conclusion sur la qualité en production.
 ## Formulation portfolio recommandée
 
 Claim défendable : « Conception d'une API FastAPI de regulatory intelligence
-evidence-grounded, d'un benchmark synthétique split-aware de 240 cas et d'une
-stack Docker observée par Prometheus ; évaluation reproductible avec bootstrap
-et LLM-as-a-judge consultatif. » Évitez « 100 % de précision sur les textes
-réglementaires » tant qu'un corpus public indépendant n'a pas été annoté et testé.
+evidence-grounded avec recherche lexicale BM25/Jaccard en mémoire, comparaison
+déterministe, vérification de citations, tests synthétiques reproductibles et
+observabilité Prometheus. » Ne revendiquez ni recherche vectorielle/graphe en
+production, ni performance de détection sur des textes réglementaires réels.

@@ -10,14 +10,14 @@ from app.api.routes import router as api_router
 from app.config import get_settings
 from app.observability import MetricsMiddleware, prometheus_metrics
 from app.persistence.database import create_schema, dispose_engine
-from app.retrieval import HybridRetriever, InMemoryIndex
+from app.retrieval import InMemoryIndex, LexicalRetriever
 from app.web.routes import router as web_router
 
 
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
-    application.state.retriever = HybridRetriever(
+    application.state.retriever = LexicalRetriever(
         InMemoryIndex(), evidence_threshold=settings.evidence_threshold
     )
     if settings.auto_create_schema:

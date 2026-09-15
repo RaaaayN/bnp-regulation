@@ -18,12 +18,11 @@ from typing import Any, Protocol
 
 from app.domain import Citation, Claim, RegulatorySection, ReviewStatus
 from app.ingestion import ingest
-from app.retrieval import HybridRetriever, InMemoryIndex
+from app.retrieval import InMemoryIndex, LexicalRetriever
 from app.services import ChangeAnalysisService, ClaimReviewer
 
 from .metrics import (
     RetrievalCase,
-    evaluate_change_detection,
     evaluate_retrieval,
     evaluate_reviewer_classification,
 )
@@ -160,6 +159,7 @@ def _retrieval_summary(
         RetrievalCase(frozenset(row["expected"]), tuple(row["retrieved"])) for row in rows
     ]
     metrics = asdict(evaluate_retrieval(cases, k=k))
+    metrics["k"] = k
     recall_values = [float(row["recall_at_k"]) for row in rows]
     rr_values = [float(row["reciprocal_rank"]) for row in rows]
     mean = lambda sample: sum(sample) / len(sample)  # noqa: E731 - local statistic
@@ -174,28 +174,19 @@ def _retrieval_summary(
     return metrics
 
 
-def _change_summary(
-    rows: Sequence[dict[str, Any]], *, bootstrap_samples: int, seed: int
-) -> dict[str, Any]:
-    labels = [(bool(row["expected_material"]), bool(row["predicted_material"])) for row in rows]
-    metrics = asdict(
-        evaluate_change_detection(
-            [expected for expected, _ in labels], [predicted for _, predicted in labels]
-        )
+def _change_summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    """Report template-derived cases as regression checks, not performance."""
+
+    passed = sum(
+        bool(row["expected_material"]) == bool(row["predicted_material"]) for row in rows
     )
-
-    def f1(sample: list[tuple[bool, bool]]) -> float:
-        result = evaluate_change_detection(
-            [expected for expected, _ in sample], [predicted for _, predicted in sample]
-        )
-        return result.f1
-
-    metrics["confidence_intervals"] = {
-        "f1": bootstrap_confidence_interval(
-            labels, f1, samples=bootstrap_samples, seed=seed + 2
-        )
+    return {
+        "evaluation_type": "synthetic_regression_checks",
+        "passed": passed,
+        "failed": len(rows) - passed,
+        "evaluated_cases": len(rows),
+        "performance_metric": None,
     }
-    return metrics
 
 
 def _reviewer_summary(
@@ -236,9 +227,7 @@ def _by_difficulty(
             "retrieval": _retrieval_summary(
                 retrieval, k=k, bootstrap_samples=bootstrap_samples, seed=seed
             ),
-            "change_detection": _change_summary(
-                changes, bootstrap_samples=bootstrap_samples, seed=seed
-            ),
+            "change_detection": _change_summary(changes),
             "reviewer_classification": _reviewer_summary(
                 reviews, bootstrap_samples=bootstrap_samples, seed=seed
             ),
@@ -317,7 +306,7 @@ def run_benchmark_v2(
             )
         )
     k = int(data["retrieval"].get("k", 5))
-    retriever = HybridRetriever(index, evidence_threshold=0.0)
+    retriever = LexicalRetriever(index, evidence_threshold=0.0)
     retrieval_rows: list[dict[str, Any]] = []
     judge_rows: list[dict[str, Any]] = []
     if judge_mode in {"gemini", "both"} and gemini_judge is None:
@@ -401,9 +390,7 @@ def run_benchmark_v2(
     retrieval_summary = _retrieval_summary(
         retrieval_rows, k=k, bootstrap_samples=bootstrap_samples, seed=bootstrap_seed
     )
-    changes_summary = _change_summary(
-        change_rows, bootstrap_samples=bootstrap_samples, seed=bootstrap_seed
-    )
+    changes_summary = _change_summary(change_rows)
     reviewer_summary = _reviewer_summary(
         review_rows, bootstrap_samples=bootstrap_samples, seed=bootstrap_seed
     )
@@ -445,6 +432,14 @@ def run_benchmark_v2(
             "baseline": "deterministic",
             "judge_mode": judge_mode,
             "bootstrap": {"samples": bootstrap_samples, "seed": bootstrap_seed},
+            "scope": {
+                "retrieval": "synthetic challenge set; not validated on an external corpus",
+                "change_detection": (
+                    "template-derived regression fixtures; not an independent performance "
+                    "evaluation"
+                ),
+                "evidence_reviewer": "synthetic regression fixtures",
+            },
         },
         "summary": summary,
         "details": {
@@ -457,13 +452,22 @@ def run_benchmark_v2(
 
 
 def render_markdown_report(report: dict[str, Any]) -> str:
-    """Render a compact, portfolio-ready report from the canonical JSON data."""
+    """Render a compact report without overstating synthetic regression checks."""
 
     benchmark = report["benchmark"]
     summary = report["summary"]
     retrieval = summary["retrieval"]
     changes = summary["change_detection"]
     reviewer = summary["evidence"]["reviewer_classification"]
+    recall_ci = retrieval["confidence_intervals"]["recall_at_k"]
+    mrr_ci = retrieval["confidence_intervals"]["mean_reciprocal_rank"]
+    recall = f"{retrieval['recall_at_k']:.1%}"
+    mrr = f"{retrieval['mean_reciprocal_rank']:.1%}"
+    if recall_ci is not None:
+        recall += f" (95% CI {recall_ci['lower']:.1%}–{recall_ci['upper']:.1%})"
+    if mrr_ci is not None:
+        mrr += f" (95% CI {mrr_ci['lower']:.1%}–{mrr_ci['upper']:.1%})"
+    change_passes = changes["passed"]
     lines = [
         f"# Benchmark — {benchmark['dataset']}",
         "",
@@ -472,16 +476,12 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         "",
         "## Results",
         "",
-        "| Evaluation | Metric | Score | Cases |",
+        "| Evaluation | Metric | Estimate with uncertainty | Cases |",
         "|---|---:|---:|---:|",
-        f"| Retrieval | Recall@K | {retrieval['recall_at_k']:.1%} | "
+        f"| Lexical retrieval | Recall@{retrieval.get('k', 5)} | {recall} | "
         f"{retrieval['evaluated_cases']} |",
-        f"| Retrieval | MRR | {retrieval['mean_reciprocal_rank']:.1%} | "
+        f"| Lexical retrieval | MRR | {mrr} | "
         f"{retrieval['evaluated_cases']} |",
-        f"| Change detection | F1 | {changes['f1']:.1%} | "
-        f"{len(report['details']['changes'])} |",
-        f"| Evidence reviewer | Accuracy | {reviewer['accuracy']:.1%} | "
-        f"{reviewer['evaluated_cases']} |",
     ]
     if "gemini_judge" in summary:
         judged = summary["gemini_judge"]
@@ -489,19 +489,43 @@ def render_markdown_report(report: dict[str, Any]) -> str:
             f"| Gemini judge (advisory) | Pass rate | {judged['pass_rate']:.1%} | "
             f"{judged['evaluated_cases']} |"
         )
-    lines.extend(["", "## By difficulty", ""])
+    lines.extend(
+        [
+            "",
+            "## Synthetic regression checks",
+            "",
+            f"- Change rules matched {change_passes}/{len(report['details']['changes'])} "
+            "template-derived fixtures.",
+            f"- Evidence reviewer matched {reviewer['correct']}/{reviewer['evaluated_cases']} "
+            "synthetic fixtures.",
+            "",
+            "These fixture pass counts verify expected code paths; they are not independent "
+            "estimates of change-detection F1 or reviewer accuracy on regulatory texts.",
+            "",
+            "## Retrieval by generator stratum",
+            "",
+        ]
+    )
     for difficulty, metrics in summary["by_difficulty"].items():
+        stratum_retrieval = metrics["retrieval"]
+        stratum_ci = stratum_retrieval["confidence_intervals"]["recall_at_k"]
+        interval = (
+            f", 95% CI {stratum_ci['lower']:.1%}–{stratum_ci['upper']:.1%}"
+            if stratum_ci is not None
+            else ""
+        )
         lines.append(
-            f"- **{difficulty.title()}** — Recall@K "
-            f"{metrics['retrieval']['recall_at_k']:.1%}, change F1 "
-            f"{metrics['change_detection']['f1']:.1%}, reviewer accuracy "
-            f"{metrics['reviewer_classification']['accuracy']:.1%}."
+            f"- **{difficulty.title()}** — Recall@{retrieval.get('k', 5)} "
+            f"{stratum_retrieval['recall_at_k']:.1%}{interval} "
+            f"(n={stratum_retrieval['evaluated_cases']})."
         )
     lines.extend(
         [
             "",
-            "> Bootstrap confidence intervals use a fixed seed. Gemini scores are "
-            "advisory and are kept separate from deterministic baseline metrics.",
+            "> “Easy”, “medium” and “hard” are generator strata, not demonstrated levels of "
+            "real-world difficulty. Bootstrap intervals use a fixed seed. The dataset is "
+            "synthetic and no result establishes performance on EUR-Lex. Gemini scores are "
+            "advisory and kept separate from deterministic baseline metrics.",
             "",
         ]
     )
