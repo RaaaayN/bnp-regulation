@@ -25,6 +25,12 @@ make demo
 Le bouton **Run complete analysis** exécute réellement les cinq appels API :
 ingestion, retrieval, comparaison, revue des citations et analyse d'impact.
 
+### Captures
+
+![Vue d'ensemble du workbench réglementaire](docs/assets/demo-overview.png)
+
+![Analyse terminée avec preuve vérifiée, impacts et métriques](docs/assets/demo-analysis.png)
+
 ## Évaluation reproductible
 
 Le benchmark principal `v2.0.0` est un **challenge set synthétique**, versionné

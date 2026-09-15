@@ -179,3 +179,7 @@ async function loadMetrics() {
 
 $("#run-analysis").addEventListener("click", runAnalysis);
 loadMetrics();
+
+if (new URLSearchParams(window.location.search).get("autorun") === "1") {
+  window.setTimeout(runAnalysis, 250);
+}
