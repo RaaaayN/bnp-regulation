@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from app.config import get_settings
 from app.domain import Citation, Claim, RegulatorySection, ReviewStatus
 from app.ingestion import ingest
 from app.retrieval import InMemoryIndex, LexicalRetriever
@@ -56,7 +57,10 @@ def run_benchmark(dataset_path: Path = DEFAULT_DATASET) -> dict[str, Any]:
                 published_at=item.get("published_at"),
             )
         )
-    retriever = LexicalRetriever(index, evidence_threshold=0.0)
+    minimum_query_coverage = get_settings().minimum_query_coverage
+    retriever = LexicalRetriever(
+        index, minimum_query_coverage=minimum_query_coverage
+    )
     retrieval_cases: list[RetrievalCase] = []
     retrieval_details: list[dict[str, Any]] = []
     k = int(data["retrieval"].get("k", 5))
@@ -142,6 +146,7 @@ def run_benchmark(dataset_path: Path = DEFAULT_DATASET) -> dict[str, Any]:
             "version": data["version"],
             "sha256": hashlib.sha256(dataset_bytes).hexdigest(),
             "deterministic": True,
+            "minimum_query_coverage": minimum_query_coverage,
             "scope": {
                 "change_detection": (
                     "template-derived regression fixtures; not an independent performance "

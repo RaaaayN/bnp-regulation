@@ -2,6 +2,7 @@
   "benchmark": {
     "dataset": "EU banking regulatory intelligence golden set",
     "deterministic": true,
+    "minimum_query_coverage": 0.6,
     "scope": {
       "change_detection": "template-derived regression fixtures; not an independent performance evaluation"
     },
@@ -141,11 +142,7 @@
         "id": "ret-001",
         "question": "How often must an institution approve its ICT risk management framework?",
         "retrieved": [
-          "EBA-ICT-2026 > ICT risk management > Article 8",
-          "GDPR-2018 > Security and notification > Article 32",
-          "EBA-ICT-2026 > ICT risk management > Article 11",
-          "CRR3-2025 > Prudential reporting > Article 92",
-          "DORA-2025 > Third-party risk > Article 28"
+          "EBA-ICT-2026 > ICT risk management > Article 8"
         ]
       },
       {
@@ -156,27 +153,17 @@
         "id": "ret-002",
         "question": "What must be done with customer due diligence records after a relationship ends?",
         "retrieved": [
-          "AMLD6-2025 > Customer due diligence > Article 31",
-          "AMLD6-2025 > Customer due diligence > Article 22",
-          "DORA-2025 > Third-party risk > Article 28",
-          "GDPR-2018 > Security and notification > Article 33",
-          "EBA-ICT-2026 > ICT risk management > Article 11"
+          "AMLD6-2025 > Customer due diligence > Article 31"
         ]
       },
       {
         "expected": [
           "DORA-2025 > Third-party risk > Article 28"
         ],
-        "hit_at_k": true,
+        "hit_at_k": false,
         "id": "ret-003",
         "question": "Which ICT supplier arrangements belong in the register of information?",
-        "retrieved": [
-          "DORA-2025 > Third-party risk > Article 28",
-          "DORA-2025 > Third-party risk > Article 28",
-          "CRR3-2025 > Prudential reporting > Article 92",
-          "EBA-ICT-2026 > ICT risk management > Article 11",
-          "GDPR-2018 > Security and notification > Article 32"
-        ]
+        "retrieved": []
       },
       {
         "expected": [
@@ -186,11 +173,7 @@
         "id": "ret-004",
         "question": "What minimum total capital ratio applies to risk exposure?",
         "retrieved": [
-          "CRR3-2025 > Prudential reporting > Article 92",
-          "GDPR-2018 > Security and notification > Article 32",
-          "EBA-ICT-2026 > ICT risk management > Article 8",
-          "CRR3-2025 > Prudential reporting > Article 430",
-          "EBA-ICT-2026 > ICT risk management > Article 11"
+          "CRR3-2025 > Prudential reporting > Article 92"
         ]
       },
       {
@@ -201,11 +184,7 @@
         "id": "ret-005",
         "question": "Within how many hours should a personal data breach be notified?",
         "retrieved": [
-          "GDPR-2018 > Security and notification > Article 33",
-          "GDPR-2018 > Security and notification > Article 33",
-          "DORA-2025 > Third-party risk > Article 30",
-          "AMLD6-2025 > Customer due diligence > Article 22",
-          "AMLD6-2025 > Customer due diligence > Article 31"
+          "GDPR-2018 > Security and notification > Article 33"
         ]
       },
       {
@@ -216,11 +195,7 @@
         "id": "ret-006",
         "question": "Which details and termination rights must ICT contracts specify?",
         "retrieved": [
-          "DORA-2025 > Third-party risk > Article 30",
-          "EBA-ICT-2026 > ICT risk management > Article 8",
-          "DORA-2025 > Third-party risk > Article 28",
-          "EBA-ICT-2026 > ICT risk management > Article 11",
-          "GDPR-2018 > Security and notification > Article 32"
+          "DORA-2025 > Third-party risk > Article 30"
         ]
       }
     ]
@@ -250,8 +225,8 @@
     },
     "retrieval": {
       "evaluated_cases": 6,
-      "mean_reciprocal_rank": 1.0,
-      "recall_at_k": 1.0
+      "mean_reciprocal_rank": 0.8333,
+      "recall_at_k": 0.8333
     }
   }
 }

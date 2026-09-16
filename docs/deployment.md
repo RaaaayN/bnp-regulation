@@ -4,7 +4,7 @@
 
 - Docker Engine récent avec le plugin Compose v2 ;
 - au moins 4 Go de mémoire disponible pour les trois conteneurs ;
-- ports 8000, 5432 et 6379 disponibles, ou remplacés dans `.env`.
+- ports 8000 et 5432 disponibles, ou remplacés dans `.env`.
 - port 9090 disponible pour Prometheus, ou remplacé dans `.env`.
 
 ## Démarrage local
@@ -38,21 +38,20 @@ utiles sont documentés dans `.env.example`.
 | `API_PORT` | `8000` | Port publié de l'API |
 | `RIA_ENVIRONMENT` | `development` | Nom d'environnement applicatif |
 | `RIA_LOG_LEVEL` | `INFO` | Niveau de journalisation |
-| `RIA_EVIDENCE_THRESHOLD` | `0.15` | Seuil minimal de preuve |
+| `RIA_MINIMUM_QUERY_COVERAGE` | `0.60` | Part minimale des termes informatifs présents dans un passage |
 | `RIA_MAX_RESULTS` | `5` | Nombre maximal de résultats |
 | `RIA_AUTO_CREATE_SCHEMA` | activé par Compose | Création du schéma au démarrage |
 | `POSTGRES_*` | voir exemple | Base, utilisateur, mot de passe et port PostgreSQL |
-| `FALKORDB_PORT` | `6379` | Port FalkorDB publié localement |
 | `PROMETHEUS_PORT` | `9090` | Interface locale Prometheus |
 
 La chaîne `RIA_DATABASE_URL` est assemblée par Compose avec les variables
-`POSTGRES_*`. Le conteneur reçoit également `FALKORDB_URL`; l'application ne la
-consommera qu'après intégration du client graphe.
+`POSTGRES_*`. L'application initialise le schéma, mais le chemin HTTP n'écrit
+pas encore les documents dans PostgreSQL.
 
 ## Cycle de vie et données
 
 ```bash
-# Arrêt en conservant PostgreSQL et FalkorDB
+# Arrêt en conservant PostgreSQL
 docker compose down
 
 # Suppression explicite des conteneurs ET des volumes de données
@@ -60,8 +59,7 @@ docker compose down --volumes
 ```
 
 La seconde commande est destructive. Pour une sauvegarde exploitable, utiliser
-`pg_dump` pour PostgreSQL et une stratégie RDB/AOF validée pour FalkorDB avant de
-supprimer ou remplacer les volumes.
+`pg_dump` pour PostgreSQL avant de supprimer ou remplacer les volumes.
 
 ## Diagnostic
 
@@ -69,13 +67,11 @@ supprimer ou remplacer les volumes.
 docker compose ps
 docker compose logs api
 docker compose logs postgres
-docker compose logs falkordb
 ```
 
 - API `unhealthy` : vérifier les logs et appeler `/health` depuis le conteneur.
 - PostgreSQL `unhealthy` : vérifier les valeurs `POSTGRES_*` et l'espace disque.
-- FalkorDB `unhealthy` : vérifier que `redis-cli ping` retourne `PONG`.
-- Port déjà occupé : changer `API_PORT`, `POSTGRES_PORT` ou `FALKORDB_PORT` dans
+- Port déjà occupé : changer `API_PORT` ou `POSTGRES_PORT` dans
   `.env`, puis recréer la stack.
 
 ## Passage en production
@@ -85,7 +81,7 @@ Avant tout déploiement manipulant des documents internes :
 
 1. fixer chaque image par version et digest, puis scanner les vulnérabilités ;
 2. fournir les secrets via le gestionnaire de secrets de la plateforme ;
-3. ne pas publier directement les ports PostgreSQL et FalkorDB ;
+3. ne pas publier directement le port PostgreSQL ;
 4. placer l'API derrière un reverse proxy TLS avec authentification et RBAC ;
 5. ajouter des probes de readiness qui testent les dépendances ;
 6. définir limites CPU/mémoire, réplication, sauvegardes et tests de restauration ;

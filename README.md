@@ -37,12 +37,18 @@ Résultats du split de test, avec intervalle de confiance bootstrap à 95 % :
 
 | Mesure | Résultat | IC 95 % | Échantillon |
 |---|---:|---:|---:|
-| Recall@5 | 75,00 % | 55,00–90,00 % | 20 requêtes |
-| Mean Reciprocal Rank | 61,42 % | 41,41–79,17 % | 20 requêtes |
+| Recall@5 | 50,00 % | 30,00–70,00 % | 20 requêtes |
+| Mean Reciprocal Rank | 50,00 % | 30,00–70,00 % | 20 requêtes |
 
 Le Recall@5 n'est publiable qu'avec son incertitude et son échantillon : sur
-20 requêtes synthétiques, l'intervalle `[55 %–90 %]` est trop large pour en
+20 requêtes synthétiques, l'intervalle `[30 %–70 %]` est trop large pour en
 tirer une estimation stable, et ne dit rien sur un corpus EUR-Lex réel.
+
+Le benchmark utilise la même garde que l'API : au moins 60 % des termes
+informatifs de la requête doivent apparaître dans le passage. Ce choix
+fail-closed pénalise les paraphrases lexicalement éloignées, mais empêche le
+meilleur résultat BM25 de se qualifier uniquement parce qu'il est normalisé par
+rapport aux autres résultats de la requête.
 
 Les 40 comparaisons de changement et les 20 cas du reviewer passent tous les
 attendus. Ils sont désormais rapportés comme **tests de non-régression**, pas
@@ -117,18 +123,18 @@ benchmark. Le protocole et la frontière d'annotation sont détaillés dans
 ## Fonctionnalités
 
 - parsing texte/HTML et découpage par titres, articles et paragraphes ;
-- recherche lexicale déterministe (BM25 + Jaccard sur tokens) avec seuil de preuve ;
+- recherche lexicale déterministe (BM25 + Jaccard) avec garde sur la couverture
+  des termes informatifs de la requête ;
 - comparaison `added` / `removed` / `modified` / `unchanged` ;
 - détection de changements matériels, notamment `should` → `must` ;
 - analyse prudente des politiques et contrôles potentiellement impactés ;
 - reviewer fail-closed vérifiant chaque extrait cité dans sa source ;
-- masquage d'identifiants et détection de prompt injection dans les documents ;
+- amorce de sanitisation par regex : masquage IBAN/e-mail et signalement
+  consultatif de trois motifs d'injection ;
 - benchmark split-aware, métriques hors ligne et intervalles bootstrap ;
 - juge Gemini optionnel avec sorties structurées, cache et retries ;
 - instrumentation HTTP et exposition Prometheus ;
 - prototype de schéma/repositories PostgreSQL non branché au chemin HTTP ;
-- services pgvector et FalkorDB provisionnés par Compose, sans recherche
-  vectorielle ni client graphe dans le chemin applicatif ;
 - image Docker non-root et stack Compose avec healthchecks.
 
 ## Démarrage avec Docker
@@ -139,8 +145,7 @@ docker compose up --build --detach --wait
 curl --fail http://localhost:8000/health
 ```
 
-Compose démarre quatre services avec healthchecks : API, PostgreSQL/pgvector,
-FalkorDB et Prometheus.
+Compose démarre trois services avec healthchecks : API, PostgreSQL et Prometheus.
 
 ## Développement local
 
@@ -198,8 +203,7 @@ flowchart LR
     Reviewer --> API[FastAPI]
     API --> Analyst[Analyste conformité]
     API --> Metrics[Prometheus metrics]
-    Ingestion -. non branché .-> PG[(PostgreSQL / pgvector)]
-    Analysis -. aucun client .-> KG[(FalkorDB)]
+    Ingestion -. schéma initialisé, données non écrites .-> PG[(PostgreSQL)]
 ```
 
 Les choix, flux de données, frontières de confiance et limites sont détaillés
@@ -211,20 +215,11 @@ consignes de passage en production sont dans
 
 L'index lexical exposé par l'API est en mémoire : son contenu est perdu au
 redémarrage. Le schéma PostgreSQL et des repositories existent, mais l'ingestion
-et la recherche HTTP ne les utilisent pas. `pgvector` est seulement présent dans
-l'image PostgreSQL ; aucun vecteur n'est écrit ni interrogé. FalkorDB est lancé
-par Compose, mais aucun client graphe n'est implémenté. Un adaptateur d'embeddings
-Gemini existe pour des expérimentations hors ligne et n'est pas appelé par la
-recherche HTTP.
+et la recherche HTTP ne les utilisent pas. Aucun stockage vectoriel ni graphe
+n'est provisionné. Un adaptateur d'embeddings Gemini existe pour des
+expérimentations hors ligne, est chargé paresseusement et n'est pas appelé par
+la recherche HTTP.
 
 Les scores affichés proviennent uniquement du rapport versionné présent dans
 `artifacts/` (v2 prioritaire, v1 en repli). Ils doivent être complétés avec un
 corpus public annoté avant toute conclusion sur la qualité en production.
-
-## Formulation portfolio recommandée
-
-Claim défendable : « Conception d'une API FastAPI de regulatory intelligence
-evidence-grounded avec recherche lexicale BM25/Jaccard en mémoire, comparaison
-déterministe, vérification de citations, tests synthétiques reproductibles et
-observabilité Prometheus. » Ne revendiquez ni recherche vectorielle/graphe en
-production, ni performance de détection sur des textes réglementaires réels.

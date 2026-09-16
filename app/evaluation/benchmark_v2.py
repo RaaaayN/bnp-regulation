@@ -16,6 +16,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Protocol
 
+from app.config import get_settings
 from app.domain import Citation, Claim, RegulatorySection, ReviewStatus
 from app.ingestion import ingest
 from app.retrieval import InMemoryIndex, LexicalRetriever
@@ -306,7 +307,10 @@ def run_benchmark_v2(
             )
         )
     k = int(data["retrieval"].get("k", 5))
-    retriever = LexicalRetriever(index, evidence_threshold=0.0)
+    minimum_query_coverage = get_settings().minimum_query_coverage
+    retriever = LexicalRetriever(
+        index, minimum_query_coverage=minimum_query_coverage
+    )
     retrieval_rows: list[dict[str, Any]] = []
     judge_rows: list[dict[str, Any]] = []
     if judge_mode in {"gemini", "both"} and gemini_judge is None:
@@ -432,6 +436,7 @@ def run_benchmark_v2(
             "baseline": "deterministic",
             "judge_mode": judge_mode,
             "bootstrap": {"samples": bootstrap_samples, "seed": bootstrap_seed},
+            "minimum_query_coverage": minimum_query_coverage,
             "scope": {
                 "retrieval": "synthetic challenge set; not validated on an external corpus",
                 "change_detection": (
@@ -485,10 +490,16 @@ def render_markdown_report(report: dict[str, Any]) -> str:
     ]
     if "gemini_judge" in summary:
         judged = summary["gemini_judge"]
-        lines.append(
-            f"| Gemini judge (advisory) | Pass rate | {judged['pass_rate']:.1%} | "
-            f"{judged['evaluated_cases']} |"
-        )
+        for label, key in (
+            ("Groundedness", "groundedness"),
+            ("Correctness", "correctness"),
+            ("Completeness", "completeness"),
+            ("Pass rate", "pass_rate"),
+        ):
+            lines.append(
+                f"| Gemini judge (advisory) | {label} | {judged[key]:.1%} | "
+                f"{judged['evaluated_cases']} |"
+            )
     lines.extend(
         [
             "",

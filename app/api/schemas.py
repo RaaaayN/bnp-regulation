@@ -36,6 +36,7 @@ class SearchHit(ApiModel):
     text: str
     citation: str
     score: float
+    query_coverage: float
 
 
 class SearchResponse(ApiModel):

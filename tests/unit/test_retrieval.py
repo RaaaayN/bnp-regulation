@@ -2,7 +2,7 @@ from app.ingestion import ingest
 from app.retrieval import InMemoryIndex, LexicalRetriever
 
 
-def _retriever(*, threshold: float = 0.12) -> LexicalRetriever:
+def _retriever(*, minimum_query_coverage: float = 0.6) -> LexicalRetriever:
     index = InMemoryIndex()
     index.add_many(
         [
@@ -18,7 +18,9 @@ def _retriever(*, threshold: float = 0.12) -> LexicalRetriever:
             ),
         ]
     )
-    return LexicalRetriever(index, evidence_threshold=threshold)
+    return LexicalRetriever(
+        index, minimum_query_coverage=minimum_query_coverage
+    )
 
 
 def test_lexical_search_ranks_relevant_evidence_and_exposes_source() -> None:
@@ -30,16 +32,33 @@ def test_lexical_search_ranks_relevant_evidence_and_exposes_source() -> None:
     assert 0.0 <= result.score <= 1.0
     assert result.lexical_score > 0
     assert result.similarity_score > 0
+    assert result.query_coverage >= 0.6
 
 
-def test_evidence_threshold_returns_empty_for_unsupported_query() -> None:
+def test_query_coverage_gate_returns_empty_for_unsupported_query() -> None:
     assert _retriever().search("astronomie exoplanète télescope") == []
+
+
+def test_query_coverage_gate_rejects_unrelated_question_with_shared_stop_words() -> None:
+    retriever = _retriever()
+
+    assert retriever.search("what is the capital of Mongolia") == []
+    assert retriever.search("the") == []
+
+
+def test_query_coverage_threshold_changes_admission_independently_of_bm25_rank() -> None:
+    query = "ratio astronomy telescope"
+    permissive_result = _retriever(minimum_query_coverage=0.0).search(query)[0]
+
+    assert permissive_result.query_coverage == 1 / 3
+    assert permissive_result.score < 0.5
+    assert _retriever(minimum_query_coverage=0.6).search(query) == []
 
 
 def test_search_is_accent_insensitive_and_deterministic() -> None:
     retriever = _retriever()
-    first = retriever.search("liquidite banque")
-    second = retriever.search("liquidite banque")
+    first = retriever.search("liquidite quotidien")
+    second = retriever.search("liquidite quotidien")
 
     assert first == second
     assert first[0].source == "LCR"

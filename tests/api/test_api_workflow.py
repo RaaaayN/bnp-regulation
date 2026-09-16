@@ -50,7 +50,17 @@ def test_ingest_search_compare_and_review_workflow(client) -> None:
 
 
 def test_search_fails_closed_without_evidence(client) -> None:
-    response = client.post("/v1/search", json={"query": "quantum banana provision"})
+    ingestion = client.post(
+        "/v1/documents",
+        json={
+            "source": "Capital requirements",
+            "content": "# Capital\n\nArticle 1\n\nFirms must maintain regulatory capital.",
+        },
+    )
+    assert ingestion.status_code == 201
 
-    assert response.status_code == 200
-    assert response.json() == {"status": "insufficient_evidence", "results": []}
+    for query in ("what is the capital of Mongolia", "the"):
+        response = client.post("/v1/search", json={"query": query})
+
+        assert response.status_code == 200
+        assert response.json() == {"status": "insufficient_evidence", "results": []}

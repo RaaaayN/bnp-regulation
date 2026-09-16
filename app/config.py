@@ -4,6 +4,8 @@ from pathlib import Path
 from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+DEFAULT_MINIMUM_QUERY_COVERAGE = 0.6
+
 
 class Settings(BaseSettings):
     """Runtime configuration loaded from environment variables."""
@@ -17,7 +19,9 @@ class Settings(BaseSettings):
         default="postgresql+asyncpg://regulatory:regulatory@postgres:5432/regulatory",
         repr=False,
     )
-    evidence_threshold: float = Field(default=0.15, ge=0.0, le=1.0)
+    minimum_query_coverage: float = Field(
+        default=DEFAULT_MINIMUM_QUERY_COVERAGE, ge=0.0, le=1.0
+    )
     max_results: int = Field(default=5, ge=1, le=50)
     auto_create_schema: bool = False
     gemini_api_key: SecretStr | None = Field(

@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from app.config import get_settings
 from app.evaluation.benchmark_v2 import (
     bootstrap_confidence_interval,
     render_markdown_report,
@@ -112,6 +113,9 @@ def test_v2_filters_split_and_reports_difficulty(tmp_path: Path) -> None:
 
     assert report["benchmark"]["schema_version"] == "2.0"
     assert report["benchmark"]["split"] == "test"
+    assert report["benchmark"]["minimum_query_coverage"] == (
+        get_settings().minimum_query_coverage
+    )
     assert report["summary"]["retrieval"]["evaluated_cases"] == 1
     assert report["summary"]["change_detection"]["passed"] == 1
     assert report["summary"]["change_detection"]["performance_metric"] is None
@@ -184,6 +188,25 @@ def test_cli_writes_both_formats(tmp_path: Path) -> None:
     assert exit_code == 0
     assert json_path.exists()
     assert markdown_path.exists()
+
+
+def test_gemini_metrics_share_one_table_when_enabled(tmp_path: Path) -> None:
+    report = run_benchmark_v2(_v2_dataset(tmp_path / "dataset.json"), bootstrap_samples=10)
+    report["summary"]["gemini_judge"] = {
+        "groundedness": 0.845,
+        "correctness": 0.69,
+        "completeness": 0.69,
+        "pass_rate": 0.55,
+        "evaluated_cases": 20,
+        "advisory": True,
+    }
+
+    markdown = render_markdown_report(report)
+
+    assert "| Gemini judge (advisory) | Groundedness | 84.5% | 20 |" in markdown
+    assert "| Gemini judge (advisory) | Correctness | 69.0% | 20 |" in markdown
+    assert "| Gemini judge (advisory) | Completeness | 69.0% | 20 |" in markdown
+    assert "| Gemini judge (advisory) | Pass rate | 55.0% | 20 |" in markdown
 
 
 def test_default_v2_dataset_runs_with_grounding_cases() -> None:

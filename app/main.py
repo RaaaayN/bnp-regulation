@@ -18,7 +18,7 @@ from app.web.routes import router as web_router
 async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     application.state.retriever = LexicalRetriever(
-        InMemoryIndex(), evidence_threshold=settings.evidence_threshold
+        InMemoryIndex(), minimum_query_coverage=settings.minimum_query_coverage
     )
     if settings.auto_create_schema:
         await create_schema()

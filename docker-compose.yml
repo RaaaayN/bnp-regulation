@@ -10,17 +10,14 @@ services:
       RIA_ENVIRONMENT: ${RIA_ENVIRONMENT:-development}
       RIA_LOG_LEVEL: ${RIA_LOG_LEVEL:-INFO}
       RIA_DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-regulatory}:${POSTGRES_PASSWORD:-regulatory}@postgres:5432/${POSTGRES_DB:-regulatory}
-      RIA_EVIDENCE_THRESHOLD: ${RIA_EVIDENCE_THRESHOLD:-0.15}
+      RIA_MINIMUM_QUERY_COVERAGE: ${RIA_MINIMUM_QUERY_COVERAGE:-0.60}
       RIA_MAX_RESULTS: ${RIA_MAX_RESULTS:-5}
       RIA_AUTO_CREATE_SCHEMA: "true"
       RIA_METRICS_REPORT: /srv/app/artifacts/evaluation-report-v2.json
-      FALKORDB_URL: redis://falkordb:6379/0
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:
       postgres:
-        condition: service_healthy
-      falkordb:
         condition: service_healthy
     healthcheck:
       test:
@@ -35,7 +32,7 @@ services:
     restart: unless-stopped
 
   postgres:
-    image: pgvector/pgvector:pg16
+    image: postgres:16
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-regulatory}
       POSTGRES_USER: ${POSTGRES_USER:-regulatory}
@@ -48,20 +45,6 @@ services:
       test:
         - CMD-SHELL
         - "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-
-  falkordb:
-    image: falkordb/falkordb:latest
-    ports:
-      - "${FALKORDB_PORT:-6379}:6379"
-    volumes:
-      - falkordb_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -96,5 +79,4 @@ services:
 
 volumes:
   postgres_data:
-  falkordb_data:
   prometheus_data:

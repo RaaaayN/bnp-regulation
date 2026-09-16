@@ -13,8 +13,8 @@ Les principes structurants sont les suivants :
 - le contenu documentaire est traité comme une donnée non fiable, jamais comme
   une instruction adressée au modèle ;
 - les impacts sont qualifiés de potentiels jusqu'à validation humaine ;
-- PostgreSQL avec l'extension pgvector et FalkorDB sont seulement provisionnés
-  par Compose ; le chemin HTTP ne lit ni n'écrit ces services ;
+- PostgreSQL est provisionné par Compose pour initialiser le schéma ; le chemin
+  HTTP ne lit ni n'écrit encore ce service ;
 - les composants spécialisés restent orchestrés et vérifiés plutôt que de former
   une chaîne d'agents autonomes sans contrôle.
 
@@ -23,15 +23,14 @@ Les principes structurants sont les suivants :
 ```mermaid
 flowchart LR
     Analyste[Analyste conformité] -->|HTTP / JSON| API[FastAPI]
-    API -.->|schéma/repositories non branchés| PG[(PostgreSQL + pgvector)]
-    API -.->|aucun client implémenté| Graph[(FalkorDB)]
+    API -.->|schéma/repositories non branchés| PG[(PostgreSQL)]
     Prom[Prometheus] -->|scrape /metrics| API
     Sources[EBA / ECB / EUR-Lex] -.->|connecteurs futurs| API
     API -.->|extension évaluée avant activation| LLM[Fournisseur LLM]
 ```
 
-Le déploiement Docker local fournit quatre services : `api`, `postgres`,
-`falkordb` et `prometheus`. L'endpoint `GET /health` est une sonde de vivacité de
+Le déploiement Docker local fournit trois services : `api`, `postgres` et
+`prometheus`. L'endpoint `GET /health` est une sonde de vivacité de
 l'API ; `/metrics` fournit les compteurs et histogrammes HTTP. La sonde de
 vivacité ne constitue pas encore une readiness complète des bases.
 
@@ -43,9 +42,8 @@ flowchart TB
     Orchestrator --> Retrieval[Retrieval]
     Orchestrator --> Change[Analyse de changement]
     Orchestrator --> Impact[Analyse d'impact]
-    Retrieval -. persistance future .-> PG[(Corpus + vecteurs)]
+    Retrieval -. persistance future .-> PG[(Corpus)]
     Change -. persistance future .-> PG
-    Impact -. intégration future .-> KG[(Knowledge graph)]
     Retrieval --> Reviewer[Reviewer]
     Change --> Reviewer
     Impact --> Reviewer
@@ -58,12 +56,11 @@ flowchart TB
 |---|---|---|
 | API | Contrats HTTP versionnés, validation, cycle de vie | Implémenté |
 | Ingestion | Parsing texte/HTML, métadonnées, chunking structurel | Implémenté |
-| Retrieval | BM25, similarité de tokens, seuil de preuve | Implémenté en mémoire |
+| Retrieval | BM25, Jaccard, couverture minimale de la requête | Implémenté en mémoire |
 | Change analysis | Alignement, classification, matérialité déterministe | Implémenté |
 | Impact analysis | Rapprochement prudent par concepts configurés | Implémenté |
 | Reviewer | Vérification exacte claim → source, politique fail-closed | Implémenté |
-| PostgreSQL/pgvector | Persistance envisagée | Schéma/repositories présents, hors chemin HTTP |
-| FalkorDB | Graphe envisagé | Conteneur seulement, aucun client applicatif |
+| PostgreSQL | Persistance envisagée | Schéma/repositories présents, hors chemin HTTP |
 
 ## Flux principal
 
@@ -90,12 +87,12 @@ un embedding ou une réponse générée ne remplace jamais la source.
 
 ## Décisions d'architecture
 
-### Deux stockages envisagés, non intégrés
+### Persistance envisagée, non intégrée
 
-PostgreSQL/pgvector et FalkorDB représentent une trajectoire d'architecture, pas
-une capacité actuelle. Leur intérêt devra être confirmé par une intégration et
-une évaluation avant de pouvoir être revendiqué : le service de recherche actuel
-combine uniquement BM25 et Jaccard en mémoire.
+PostgreSQL représente une trajectoire de persistance, pas une capacité du chemin
+HTTP actuel. Son intérêt devra être confirmé par une intégration et une
+évaluation avant de pouvoir être revendiqué. Le service de recherche combine
+uniquement BM25 et Jaccard en mémoire.
 
 ### Orchestration explicite
 
@@ -105,9 +102,10 @@ des erreurs. Cette approche rend les décisions testables et auditables.
 
 ### Refus fondé sur le niveau de preuve
 
-Le seuil de retrieval est configurable. En dessous du seuil, ou lorsqu'un claim
-n'est pas soutenu par son passage, la réponse doit expliciter l'insuffisance de
-preuve. La confiance du modèle n'est pas assimilée à une probabilité juridique.
+La couverture minimale des termes informatifs de la requête est configurable.
+En dessous de cette couverture, ou lorsqu'un claim n'est pas soutenu par son
+passage, la réponse explicite l'insuffisance de preuve. La confiance du modèle
+n'est pas assimilée à une probabilité juridique.
 
 ### Déploiement reproductible
 
@@ -118,7 +116,8 @@ données dans des volumes nommés.
 ## Sécurité et gouvernance
 
 - Authentification et RBAC doivent précéder l'exposition à plusieurs profils.
-- Les documents récupérés sont délimités et neutralisés contre la prompt injection.
+- Une amorce de sanitisation masque IBAN/e-mail et signale trois motifs
+  d'injection par regex ; ce signal est consultatif et ne neutralise pas le texte.
 - Les secrets ne sont ni placés dans l'image ni versionnés ; ils proviennent de
   l'environnement ou, en production, d'un gestionnaire de secrets.
 - Les données personnelles doivent être détectées et masquées avant tout appel à
@@ -134,13 +133,9 @@ données dans des volumes nommés.
 ## Limites actuelles
 
 - Le socle expose une vivacité, sans readiness applicative des bases.
-- FalkorDB est démarré mais son client n'est pas encore intégré à l'API.
-- L'image FalkorDB utilise le tag `latest` pour le MVP local ; un digest immuable
-  doit être fixé avant une mise en production.
 - Compose fournit un environnement mono-hôte sans TLS, haute disponibilité,
   sauvegarde automatisée ni rotation de secrets.
-- L'index HTTP est en mémoire. L'extension pgvector est installée dans le
-  conteneur PostgreSQL, mais aucun embedding n'y est stocké ou recherché.
+- L'index HTTP est en mémoire et aucun embedding n'est stocké ou recherché.
 - L'analyse HTTP actuelle reste déterministe et explicable. Les adaptateurs
   Gemini (embeddings et juge structuré) sont confinés à l'évaluation hors ligne ;
   leur activation en production nécessiterait une comparaison contrôlée, une

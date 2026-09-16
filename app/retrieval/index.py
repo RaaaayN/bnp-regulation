@@ -13,6 +13,67 @@ from threading import RLock
 from app.ingestion import IngestedDocument, TextChunk
 
 _TOKEN_RE = re.compile(r"[a-z0-9]+")
+_QUERY_STOP_WORDS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "are",
+        "as",
+        "at",
+        "au",
+        "aux",
+        "avec",
+        "be",
+        "by",
+        "ce",
+        "ces",
+        "dans",
+        "de",
+        "des",
+        "do",
+        "does",
+        "du",
+        "en",
+        "est",
+        "et",
+        "for",
+        "from",
+        "how",
+        "in",
+        "is",
+        "it",
+        "la",
+        "le",
+        "les",
+        "of",
+        "on",
+        "or",
+        "ou",
+        "par",
+        "pour",
+        "que",
+        "quel",
+        "quelle",
+        "quelles",
+        "quels",
+        "qui",
+        "sur",
+        "that",
+        "the",
+        "their",
+        "to",
+        "un",
+        "une",
+        "what",
+        "when",
+        "where",
+        "which",
+        "who",
+        "why",
+        "with",
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,6 +84,8 @@ class SearchResult:
     score: float
     lexical_score: float
     similarity_score: float
+    ranking_score: float
+    query_coverage: float
 
     @property
     def text(self) -> str:
@@ -90,34 +153,39 @@ class LexicalRetriever:
 
     Both constituent signals are lexical; no embedding or vector index is used
     by this code path.
-    Scores are normalized into [0, 1]. Results below ``evidence_threshold`` are
-    excluded, so an empty list has the explicit meaning “insufficient evidence”.
+    BM25 is normalized only for ranking. Admission is independent of that
+    query-relative maximum: a result must cover ``minimum_query_coverage`` of
+    the query's informative terms. Stop-word-only queries therefore return no
+    evidence. The public score also includes coverage and stays in [0, 1].
     """
 
     def __init__(
         self,
         index: InMemoryIndex | None = None,
         *,
+        minimum_query_coverage: float,
         lexical_weight: float = 0.75,
-        evidence_threshold: float = 0.12,
         k1: float = 1.5,
         b: float = 0.75,
     ) -> None:
         if not 0.0 <= lexical_weight <= 1.0:
             raise ValueError("lexical_weight must be between 0 and 1")
-        if not 0.0 <= evidence_threshold <= 1.0:
-            raise ValueError("evidence_threshold must be between 0 and 1")
+        if not 0.0 <= minimum_query_coverage <= 1.0:
+            raise ValueError("minimum_query_coverage must be between 0 and 1")
         self.index = index or InMemoryIndex()
         self.lexical_weight = lexical_weight
-        self.evidence_threshold = evidence_threshold
+        self.minimum_query_coverage = minimum_query_coverage
         self.k1 = k1
         self.b = b
 
     def search(self, query: str, *, limit: int = 5) -> list[SearchResult]:
         if limit < 1:
             raise ValueError("limit must be positive")
-        query_tokens = tokenize(query)
-        if not query_tokens:
+        ranking_query_tokens = tokenize(query)
+        informative_query_tokens = tuple(
+            token for token in ranking_query_tokens if token not in _QUERY_STOP_WORDS
+        )
+        if not informative_query_tokens:
             return []
         snapshot = self.index.snapshot()
         if not snapshot:
@@ -127,7 +195,7 @@ class LexicalRetriever:
         for _, tokens in snapshot:
             document_frequency.update(set(tokens))
         average_length = sum(len(tokens) for _, tokens in snapshot) / len(snapshot)
-        query_counts = Counter(query_tokens)
+        query_counts = Counter(ranking_query_tokens)
         raw_lexical = [
             _bm25(
                 tokens,
@@ -143,18 +211,36 @@ class LexicalRetriever:
         max_lexical = max(raw_lexical, default=0.0)
 
         results: list[SearchResult] = []
-        query_set = set(query_tokens)
+        ranking_query_set = set(ranking_query_tokens)
+        informative_query_set = set(informative_query_tokens)
         for (chunk, tokens), raw_score in zip(snapshot, raw_lexical, strict=True):
             lexical = raw_score / max_lexical if max_lexical else 0.0
             token_set = set(tokens)
             similarity = (
-                len(query_set & token_set) / len(query_set | token_set) if token_set else 0.0
+                len(ranking_query_set & token_set) / len(ranking_query_set | token_set)
+                if token_set
+                else 0.0
             )
-            score = self.lexical_weight * lexical + (1 - self.lexical_weight) * similarity
-            if score >= self.evidence_threshold:
-                results.append(SearchResult(chunk, score, lexical, similarity))
+            query_coverage = len(informative_query_set & token_set) / len(
+                informative_query_set
+            )
+            ranking_score = self.lexical_weight * lexical + (
+                1 - self.lexical_weight
+            ) * similarity
+            score = ranking_score * query_coverage
+            if raw_score > 0 and query_coverage >= self.minimum_query_coverage:
+                results.append(
+                    SearchResult(
+                        chunk,
+                        score,
+                        lexical,
+                        similarity,
+                        ranking_score,
+                        query_coverage,
+                    )
+                )
 
-        results.sort(key=lambda result: (-result.score, result.chunk.id))
+        results.sort(key=lambda result: (-result.ranking_score, result.chunk.id))
         return results[:limit]
 
 

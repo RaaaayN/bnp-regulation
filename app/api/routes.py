@@ -67,6 +67,7 @@ async def search_documents(
                 text=result.text,
                 citation=result.citation,
                 score=round(result.score, 4),
+                query_coverage=round(result.query_coverage, 4),
             )
             for result in results
         ),
